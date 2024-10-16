@@ -1,4 +1,4 @@
-name: test
+name: test (linux, macOS)
 
 on:
     push:
@@ -32,29 +32,3 @@ jobs:
 
             -   name: Run pipeline
                 run: .github/pipeline
-
-    devices:
-        runs-on: macos-15
-        name: devices
-        steps:
-            -   name: Checkout repository
-                uses: actions/checkout@v3
-
-            -   name: Build iOS
-                run: |
-                    swift --version
-                    xcrun xcodebuild build -scheme "IP" -destination \
-                        "generic/platform=ios"
-
-            -   name: Build tvOS
-                run: |
-                    swift --version
-                    xcrun xcodebuild build -scheme "IP" -destination \
-                        "generic/platform=tvos"
-
-            -   name: Build watchOS
-                run: |
-                    swift --version
-                    xcrun xcodebuild build -scheme "IP" -destination \
-                        "generic/platform=watchos"
-
