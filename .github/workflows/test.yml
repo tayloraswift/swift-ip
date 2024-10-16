@@ -35,7 +35,7 @@ jobs:
 
     devices:
         runs-on: macos-15
-        name: macOS
+        name: devices
         steps:
             -   name: Checkout repository
                 uses: actions/checkout@v3
