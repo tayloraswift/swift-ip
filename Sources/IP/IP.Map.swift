@@ -5,6 +5,9 @@ extension IP
     struct Map<Base, Value> where Base:IP.Address
     {
         /// CIDR blocks, sorted by mask length.
+        ///
+        /// TODO: Is this really the most efficient search strategy? Perhaps we would be better
+        /// off with a “dumb” array of sorted intervals, and a binary search.
         @usableFromInline
         let binades:[(UInt8, [Base: Value])]
 
@@ -15,22 +18,26 @@ extension IP
         }
     }
 }
-extension IP.Map
+extension IP.Map:ExpressibleByDictionaryLiteral
 {
     /// Constructs an empty IP map.
     @inlinable public
-    init()
+    init(dictionaryLiteral:(Never, Value)...)
     {
         self.init(binades: [])
     }
-
+}
+extension IP.Map
+{
     /// Constructs an IP map from a table of CIDR blocks.
-    @inlinable public
-    init(indexing table:borrowing IP.BlockTable<Base, Value>)
+    public
+    init(indexing table:borrowing [IP.Block<Base>: Value])
     {
-        var binades:[(UInt8, [Base: Value])] = table.blocks.filter { !$0.value.isEmpty }
-        binades.sort { $0.0 < $1.0 }
-        self.init(binades: binades)
+        let binades:[UInt8: [Base: Value]] = table.reduce(into: [:])
+        {
+            $0[$1.key.bits, default: [:]][$1.key.base] = $1.value
+        }
+        self.init(binades: binades.sorted { $0.key < $1.key })
     }
 }
 extension IP.Map:Sendable where Value:Sendable
