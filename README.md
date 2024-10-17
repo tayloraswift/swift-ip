@@ -44,6 +44,11 @@ The IP address types defined by the `Network` framework are Darwin-only, which p
 The swift-nio library provides a multi-platform [`SocketAddress`](https://swiftinit.org/docs/swift-nio/niocore/socketaddress) type, but it is heap-allocated and reference-counted, and requires linking against the entire `NIOCore` module. This makes it unsuitable as a high-performance currency type for purposes such as firewall implementations or metrics collection.
 
 
+## Who is using swift-ip?
+
+The [Swiftinit](https://swiftinit.org) documentation index currently uses the swift-ip library to verify clients (such as Googlebot and GitHub Webhooks) and combat abuse.
+
+
 ## License
 
 The swift-ip library is Apache 2.0 licensed.
