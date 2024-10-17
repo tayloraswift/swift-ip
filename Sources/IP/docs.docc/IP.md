@@ -18,5 +18,4 @@ This Foundation-free module provides tools for parsing and formatting IP address
 ### Address tables
 
 -   ``IP.Block``
--   ``IP.BlockTable``
 -   ``IP.Map``
