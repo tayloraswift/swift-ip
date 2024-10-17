@@ -5,10 +5,10 @@
 [![test (linux)](https://github.com/tayloraswift/swift-ip/actions/workflows/test.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/test.yml)
 [![documentation](https://github.com/tayloraswift/swift-ip/actions/workflows/docs.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/docs.yml)
 
-[![iOS](https://github.com/tayloraswift/swift-ip/actions/workflows/devices/iOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/devices/iOS.yml)
-[![tvOS](https://github.com/tayloraswift/swift-ip/actions/workflows/devices/tvOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/devices/tvOS.yml)
-[![visionOS](https://github.com/tayloraswift/swift-ip/actions/workflows/devices/visionOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/devices/visionOS.yml)
-[![watchOS](https://github.com/tayloraswift/swift-ip/actions/workflows/devices/watchOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/devices/watchOS.yml)
+[![iOS](https://github.com/tayloraswift/swift-ip/actions/workflows/iOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/iOS.yml)
+[![tvOS](https://github.com/tayloraswift/swift-ip/actions/workflows/tvOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/tvOS.yml)
+[![visionOS](https://github.com/tayloraswift/swift-ip/actions/workflows/visionOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/visionOS.yml)
+[![watchOS](https://github.com/tayloraswift/swift-ip/actions/workflows/watchOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/watchOS.yml)
 
 
 </div>
