@@ -6,7 +6,6 @@ on:
     pull_request:
         branches: [ master ]
 
-
 jobs:
     devices:
         uses: tayloraswift/swift-ci/.github/workflows/device.yml@master
