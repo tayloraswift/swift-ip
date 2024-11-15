@@ -9,7 +9,6 @@ on:
 jobs:
     build:
         uses: tayloraswift/swift-device-action/.github/workflows/build.yml@master
-        name: ${{ github.workflow }}
         with:
             xcode-scheme: 'swift-ip-Package'
             destination: ${{ github.workflow }}
