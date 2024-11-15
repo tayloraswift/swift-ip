@@ -1,0 +1,13 @@
+name: build
+
+on:
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
+
+jobs:
+    devices:
+        uses: tayloraswift/swift-ci@master/device.yml
+        with:
+            xcode-scheme: "swift-ip-Package"
