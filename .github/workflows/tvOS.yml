@@ -11,4 +11,4 @@ jobs:
         uses: tayloraswift/swift-device-action/.github/workflows/build.yml@master
         with:
             xcode-scheme: 'swift-ip-Package'
-            destination: ${{ github.action }}
+            destination: ${{ github.workflow }}
