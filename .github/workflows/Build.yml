@@ -8,6 +8,6 @@ on:
 
 jobs:
     devices:
-        uses: tayloraswift/swift-ci@master/device.yml
+        uses: tayloraswift/swift-ci/device.yml@master
         with:
             xcode-scheme: "swift-ip-Package"
