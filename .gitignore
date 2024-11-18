@@ -3,4 +3,7 @@
 .build.ssgc
 .vscode
 
+asn.json
+country.json
+
 Package.resolved
