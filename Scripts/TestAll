@@ -18,4 +18,6 @@ for file in asn country ; do
 done
 
 swift --version
-swift test -c release
+swift build -c release --build-tests
+swift test -c release --skip-build
+swift run -c release IPinfoCompact
