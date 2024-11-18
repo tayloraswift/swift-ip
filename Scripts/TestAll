@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+swift --version
+swift build -c release --build-tests
+swift test -c release --skip-build
+
 # If JSON files are not present, download them from ipinfo.io
 for file in asn country ; do
     if [ ! -f $file.json ]; then
@@ -17,7 +21,4 @@ for file in asn country ; do
     fi
 done
 
-swift --version
-swift build -c release --build-tests
-swift test -c release --skip-build
 swift run -c release IPinfoCompact
