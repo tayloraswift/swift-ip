@@ -15,7 +15,6 @@ let package:Package = .init(
     dependencies: [
         .package(url: "https://github.com/tayloraswift/swift-bson", from: "0.1.0"),
         .package(url: "https://github.com/tayloraswift/swift-json", from: "1.1.1"),
-        .package(url: "https://github.com/tayloraswift/swift-unixtime", from: "0.1.5"),
 
         .package(url: "https://github.com/apple/swift-nio", from: "2.75.0"),
     ],
