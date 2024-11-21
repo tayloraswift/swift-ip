@@ -1,4 +1,12 @@
 #!/bin/bash
 set -e
+
 swift --version
-swift test -c release
+
+swift build -c release \
+    --explicit-target-dependency-import-check=error \
+    --build-tests
+
+swift test -c release \
+    --explicit-target-dependency-import-check=error \
+    --skip-build
