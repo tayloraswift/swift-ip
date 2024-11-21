@@ -22,10 +22,11 @@ jobs:
                 run: Scripts/Package
 
             -   name: Upload products
-                uses: Noelware/s3-action@2
+                uses: Noelware/s3-action@2.2.6
                 with:
                     files: asn.bson.gz country.bson.gz
                     access-key-id: ${{ vars.AWS_S3_ACCESS_KEY }}
                     secret-key: ${{ secrets.AWS_S3_ACCESS_SECRET }}
                     path-format: '$(file)'
                     prefix: '/ipinfo'
+                    bucket: 'swiftinit'
