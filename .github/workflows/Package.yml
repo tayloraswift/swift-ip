@@ -1,0 +1,31 @@
+name: package
+
+on:
+    pull_request:
+        branches: [ master ]
+
+jobs:
+    linux:
+        runs-on: ubuntu-24.04
+        name: Ubuntu 24.04
+        steps:
+            -   name: Install Swift
+                uses: tayloraswift/swift-install-action@master
+                with:
+                    swift-prefix: "swift-6.0.2-release/ubuntu2404/swift-6.0.2-RELEASE"
+                    swift-id: "swift-6.0.2-RELEASE-ubuntu24.04"
+
+            -   name: Checkout repository
+                uses: actions/checkout@v3
+
+            -   name: Build products
+                run: Scripts/Package
+
+            -   name: Upload products
+                uses: Noelware/s3-action@2
+                with:
+                    files: asn.bson.gz country.bson.gz
+                    access-key-id: ${{ vars.AWS_S3_ACCESS_KEY }}
+                    secret-key: ${{ secrets.AWS_S3_ACCESS_SECRET }}
+                    path-format: '$(file)'
+                    prefix: '/ipinfo'

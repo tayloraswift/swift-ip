@@ -2,23 +2,11 @@
 set -e
 
 swift --version
-swift build -c release --build-tests
-swift test -c release --skip-build
 
-# If JSON files are not present, download them from ipinfo.io
-for file in asn country ; do
-    if [ ! -f $file.json ]; then
-        if [ -z "$IPINFO_TOKEN" ]; then
-            echo "error: IPINFO_TOKEN is not set"
-            exit 1
-        fi
+swift build -c release \
+    --explicit-target-dependency-import-check=error \
+    --build-tests
 
-        # Must follow redirects to get the actual file
-        curl -L https://ipinfo.io/data/free/$file.json.gz?token=$IPINFO_TOKEN -o $file.json.gz
-        gzip -d $file.json.gz
-    else
-        echo "Using existing $file.json"
-    fi
-done
-
-swift run -c release IPinfoCompact
+swift test -c release \
+    --explicit-target-dependency-import-check=error \
+    --skip-build

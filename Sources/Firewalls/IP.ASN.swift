@@ -1,3 +1,6 @@
+import BSON
+import IP
+
 extension IP
 {
     /// An [Autonomous System](https://en.wikipedia.org/wiki/Autonomous_system_(Internet))
@@ -43,5 +46,21 @@ extension IP.ASN:LosslessStringConvertible
         }
 
         self.init(value: value)
+    }
+}
+extension IP.ASN:BSONEncodable
+{
+    @inlinable public
+    func encode(to field:inout BSON.FieldEncoder)
+    {
+        Int32.init(bitPattern: self.value).encode(to: &field)
+    }
+}
+extension IP.ASN:BSONDecodable
+{
+    @inlinable public
+    init(bson:BSON.AnyValue) throws
+    {
+        self.init(value: UInt32.init(bitPattern: try Int32.init(bson: bson)))
     }
 }
