@@ -21,8 +21,6 @@ jobs:
                 uses: actions/checkout@v3
 
             -   name: Run tests
-                env:
-                    IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
                 run: Scripts/TestAll
 
     macos:
@@ -33,6 +31,4 @@ jobs:
                 uses: actions/checkout@v3
 
             -   name: Run tests
-                env:
-                    IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
                 run: Scripts/TestAll
