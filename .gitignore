@@ -1,13 +1,7 @@
 .ssgc
 .build
 .build.ssgc
+.ipinfo
 .vscode
-
-asn.json
-asn.bson
-asn.bson.gz
-country.json
-country.bson
-country.bson.gz
 
 Package.resolved
