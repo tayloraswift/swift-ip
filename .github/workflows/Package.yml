@@ -26,8 +26,8 @@ jobs:
             -   name: Upload products
                 uses: shallwefootball/s3-upload-action@master
                 with:
-                    aws_secret_access_key: ${{ vars.AWS_S3_ACCESS_KEY }}
-                    aws_key_id: ${{ secrets.AWS_S3_ACCESS_SECRET }}
+                    aws_secret_access_key: ${{ secrets.AWS_S3_ACCESS_SECRET }}
+                    aws_key_id: ${{ vars.AWS_S3_ACCESS_KEY }}
                     aws_bucket: swiftinit
                     source_dir: .ipinfo
                     destination_dir: ipinfo
