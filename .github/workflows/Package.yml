@@ -9,6 +9,13 @@ jobs:
         runs-on: ubuntu-24.04
         name: Ubuntu 24.04
         steps:
+            -   name: Setup AWS CLI
+                uses: aws-actions/configure-aws-credentials@v1
+                with:
+                    aws-secret-access-key: ${{ secrets.AWS_S3_ACCESS_SECRET }}
+                    aws-access-key-id: ${{ vars.AWS_S3_ACCESS_KEY }}
+                    aws-region: us-east-1
+
             -   name: Install Swift
                 uses: tayloraswift/swift-install-action@master
                 with:
@@ -23,13 +30,8 @@ jobs:
                     IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
                 run: Scripts/Package
 
-            -   name: Upload products
-                uses: Noelware/s3-action@2.2.6
-                with:
-                    access-key-id: ${{ vars.AWS_S3_ACCESS_KEY }}
-                    secret-key: ${{ secrets.AWS_S3_ACCESS_SECRET }}
-                    path-format: '/ipinfo/$(file)'
-                    bucket: 'swiftinit'
-                    files: |
-                        country.bson.gz,
-                        asn.bson.gz
+            -   name: Upload national database
+                run: aws s3 cp .ipinfo/country.bson.gz s3://swiftinit/ipinfo/country.bson.gz
+
+            -   name: Upload ASN database
+                run: aws s3 cp .ipinfo/asn.bson.gz s3://swiftinit/ipinfo/asn.bson.gz
