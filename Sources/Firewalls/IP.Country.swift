@@ -12,13 +12,16 @@ extension IP
         let id:ISO.Country
 
         public
-        var ranges:[ClosedRange<IP.V6>]
+        var v4:[ClosedRange<IP.V4>]
+        public
+        var v6:[ClosedRange<IP.V6>]
 
         @inlinable public
-        init(id:ISO.Country, ranges:[ClosedRange<IP.V6>] = [])
+        init(id:ISO.Country, v4:[ClosedRange<IP.V4>] = [], v6:[ClosedRange<IP.V6>] = [])
         {
             self.id = id
-            self.ranges = ranges
+            self.v4 = v4
+            self.v6 = v6
         }
     }
 }
@@ -28,7 +31,8 @@ extension IP.Country
     enum CodingKey:String, Sendable
     {
         case id = "_id"
-        case ranges = "R"
+        case v4 = "4"
+        case v6 = "6"
     }
 }
 extension IP.Country:BSONDocumentEncodable
@@ -37,7 +41,8 @@ extension IP.Country:BSONDocumentEncodable
     func encode(to bson:inout BSON.DocumentEncoder<CodingKey>)
     {
         bson[.id] = self.id
-        bson[.ranges] = IP.V6.Buffer.init(elidingEmpty: self.ranges)
+        bson[.v4] = IP.Buffer<IP.V4>.init(elidingEmpty: self.v4)
+        bson[.v6] = IP.Buffer<IP.V6>.init(elidingEmpty: self.v6)
     }
 }
 extension IP.Country:BSONDocumentDecodable
@@ -46,6 +51,7 @@ extension IP.Country:BSONDocumentDecodable
     init(bson:BSON.DocumentDecoder<CodingKey>) throws
     {
         self.init(id: try bson[.id].decode(),
-            ranges: try bson[.ranges].decode(as: IP.V6.Buffer.self, with: \.elements))
+            v4: try bson[.v4]?.decode(as: IP.Buffer<IP.V4>.self, with: \.elements) ?? [],
+            v6: try bson[.v6]?.decode(as: IP.Buffer<IP.V6>.self, with: \.elements) ?? [])
     }
 }
