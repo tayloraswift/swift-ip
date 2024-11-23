@@ -8,7 +8,7 @@ extension IP
     /// Data structures should mask the base addresses using ``Address./(_:_:)`` and perform
     /// lookups against the masked values.
     @frozen public
-    struct Block<Base>:Equatable, Hashable, Sendable where Base:IP.Address
+    struct Block<Base>:Equatable, Hashable, Sendable where Base:Address
     {
         public
         var base:Base
@@ -41,6 +41,11 @@ extension IP.Block<IP.V4>
     /// Returns the IPv4 loopback mask, `127.0.0.0/8`.
     @inlinable public
     static var loopback:Self { .init(base: .localhost, bits: 8) }
+}
+extension IP.Block
+{
+    @inlinable public
+    var range:ClosedRange<Base> { self.base ... self.base ^ self.bits }
 }
 extension IP.Block:CustomStringConvertible
 {

@@ -2,7 +2,7 @@ extension IP
 {
     /// An IPv6 address, which is 128 bits wide.
     @frozen public
-    struct V6:Equatable, Hashable, Sendable
+    struct V6:Address
     {
         /// The raw 128-bit address, in big-endian byte order. The byte at the lowest address
         /// appears in the high bits of the first hextet.
@@ -129,42 +129,6 @@ extension IP.V6
     /// Returns the loopback address, `::1`. There is only one loopback address in IPv6.
     @inlinable public
     static var localhost:Self { .init(value: 1) }
-
-    /// Initializes an IPv6 address from a 128-bit logical value. The high bits of the
-    /// ``UInt128`` will appear in the high bits of the first hextet.
-    @inlinable public
-    init(value:UInt128)
-    {
-        self.init(storage: value.bigEndian)
-    }
-
-    /// The logical value of the address. The high bits of the integer come from the high bits
-    /// of the first hextet.
-    @inlinable public
-    var value:UInt128 { .init(bigEndian: self.storage) }
-}
-extension IP.V6:Comparable
-{
-    /// Compares two IPv6 addresses by their logical ``value``.
-    @inlinable public static
-    func < (a:Self, b:Self) -> Bool { a.value < b.value }
-}
-extension IP.V6:IP.Address
-{
-    /// An IPv6 address is 128 bits wide.
-    @inlinable public static
-    var bitWidth:UInt8 { 128 }
-
-    @inlinable public static
-    func & (a:Self, b:Self) -> Self { .init(storage: a.storage & b.storage) }
-
-    @inlinable public static
-    func / (self:Self, bits:UInt8) -> Self
-    {
-        let ones:UInt128 = ~0
-        let mask:Self = .init(value: ones << (128 - bits))
-        return self & mask
-    }
 }
 extension IP.V6:RandomAccessCollection
 {

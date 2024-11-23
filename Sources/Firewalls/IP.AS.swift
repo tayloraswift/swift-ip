@@ -11,17 +11,25 @@ extension IP
         let id:ASN
 
         public
-        var ranges:[ClosedRange<IP.V6>]
+        var v4:[ClosedRange<IP.V4>]
+        public
+        var v6:[ClosedRange<IP.V6>]
+
         public
         var domain:String
         public
         var name:String
 
         @inlinable public
-        init(id:ASN, ranges:[ClosedRange<IP.V6>] = [], domain:String, name:String)
+        init(id:ASN,
+            v4:[ClosedRange<IP.V4>] = [],
+            v6:[ClosedRange<IP.V6>] = [],
+            domain:String,
+            name:String)
         {
             self.id = id
-            self.ranges = ranges
+            self.v4 = v4
+            self.v6 = v6
             self.domain = domain
             self.name = name
         }
@@ -33,7 +41,8 @@ extension IP.AS
     enum CodingKey:String, Sendable
     {
         case id = "_id"
-        case ranges = "R"
+        case v4 = "4"
+        case v6 = "6"
         case domain = "D"
         case name = "N"
     }
@@ -44,7 +53,8 @@ extension IP.AS:BSONDocumentEncodable
     func encode(to bson:inout BSON.DocumentEncoder<CodingKey>)
     {
         bson[.id] = self.id
-        bson[.ranges] = IP.V6.Buffer.init(elidingEmpty: self.ranges)
+        bson[.v4] = IP.Buffer<IP.V4>.init(elidingEmpty: self.v4)
+        bson[.v6] = IP.Buffer<IP.V6>.init(elidingEmpty: self.v6)
         bson[.domain] = self.domain
         bson[.name] = self.name
     }
@@ -55,7 +65,8 @@ extension IP.AS:BSONDocumentDecodable
     init(bson:BSON.DocumentDecoder<CodingKey>) throws
     {
         self.init(id: try bson[.id].decode(),
-            ranges: try bson[.ranges].decode(as: IP.V6.Buffer.self, with: \.elements),
+            v4: try bson[.v4]?.decode(as: IP.Buffer<IP.V4>.self, with: \.elements) ?? [],
+            v6: try bson[.v6]?.decode(as: IP.Buffer<IP.V6>.self, with: \.elements) ?? [],
             domain: try bson[.domain].decode(),
             name: try bson[.name].decode())
     }

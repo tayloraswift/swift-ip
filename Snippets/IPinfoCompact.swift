@@ -47,34 +47,69 @@ func compact(country objects:[IPinfo.CountryRange]) -> BSON.List
     let table:[ISO.Country: IP.Country] = objects.reduce(into: [:])
     {
         let empty:IP.Country = .init(id: $1.country)
-        $0[$1.country, default: empty].ranges.append($1.first ... $1.last)
+
+        if  let first:IP.V4 = $1.first.v4,
+            let last:IP.V4 = $1.last.v4
+        {
+            $0[$1.country, default: empty].v4.append(first ... last)
+        }
+        else
+        {
+            $0[$1.country, default: empty].v6.append($1.first ... $1.last)
+        }
+    }
+
+    var list:[IP.Country] = table.values.sorted { $0.id < $1.id }
+
+    for i:Int in list.indices
+    {
+        list[i].v4.sort { $0.lowerBound < $1.lowerBound }
+        list[i].v6.sort { $0.lowerBound < $1.lowerBound }
     }
 
     print("""
-        Country Ranges: \(table.values.reduce(0) { $0 + $1.ranges.count })
-        Countries: \(table.count)
+        Country Ranges (IPv4): \(list.reduce(0) { $0 + $1.v4.count })
+        Country Ranges (IPv6): \(list.reduce(0) { $0 + $1.v6.count })
+        Countries: \(list.count)
         """)
-    for (id, country):(ISO.Country, IP.Country) in table.sorted(by: { $0.key < $1.key })
+    for country:IP.Country in list
     {
-        print("    \(id): \(country.ranges.count)")
+        print("    \(country.id): (\(country.v4.count) IPv4, \(country.v6.count) IPv6)")
     }
 
-    return .init(elements: table.values.sorted { $0.id < $1.id })
+    return .init(elements: list)
 }
 func compact(asn objects:[IPinfo.ASNRange]) -> BSON.List
 {
     let table:[IP.ASN: IP.AS] = objects.reduce(into: [:])
     {
         let empty:IP.AS = .init(id: $1.asn, domain: $1.domain, name: $1.name)
-        $0[$1.asn, default: empty].ranges.append($1.first ... $1.last)
+
+        if  let first:IP.V4 = $1.first.v4,
+            let last:IP.V4 = $1.last.v4
+        {
+            $0[$1.asn, default: empty].v4.append(first ... last)
+        }
+        else
+        {
+            $0[$1.asn, default: empty].v6.append($1.first ... $1.last)
+        }
+    }
+
+    var list:[IP.AS] = table.values.sorted { $0.id < $1.id }
+    for i:Int in list.indices
+    {
+        list[i].v4.sort { $0.lowerBound < $1.lowerBound }
+        list[i].v6.sort { $0.lowerBound < $1.lowerBound }
     }
 
     print("""
-        Autonomous System Ranges: \(table.values.reduce(0) { $0 + $1.ranges.count })
-        Autonomous Systems: \(table.count)
+        Autonomous System Ranges (IPv4): \(list.reduce(0) { $0 + $1.v4.count })
+        Autonomous System Ranges (IPv6): \(list.reduce(0) { $0 + $1.v6.count })
+        Autonomous Systems: \(list.count)
         """)
 
-    return .init(elements: table.values.sorted { $0.id < $1.id })
+    return .init(elements: list)
 }
 
 extension Array where Element:JSONDecodable

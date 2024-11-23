@@ -30,5 +30,5 @@ done
 swift run -c release IPinfoCompact country.json country.bson
 swift run -c release IPinfoCompact asn.json asn.bson
 
-gzip -9 country.bson
-gzip -9 asn.bson
+gzip -kf9 country.bson
+gzip -kf9 asn.bson
