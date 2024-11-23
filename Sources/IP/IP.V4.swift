@@ -2,7 +2,7 @@ extension IP
 {
     /// An IPv4 address, which is 32 bits wide.
     @frozen public
-    struct V4:Address
+    struct V4:Address, ExpressibleByIntegerLiteral
     {
         /// The raw address, in big-endian byte order.
         ///

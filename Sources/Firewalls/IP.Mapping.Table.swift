@@ -48,7 +48,8 @@ extension IP.Mapping.Table
         }
 
         let (range, color):(ClosedRange<Bound>, Color) = self.intervals[index]
-        if  range.upperBound < ip
+        //  We already know that `ip <= range.upperBound`
+        if  ip < range.lowerBound
         {
             return nil
         }
@@ -68,7 +69,8 @@ extension IP.Mapping.Table
         {
             let half:Int = n / 2
             let mid:Int = self.intervals.index(l, offsetBy: half)
-            if  self.intervals[mid].range.lowerBound <= ip
+
+            if  ip <= self.intervals[mid].range.upperBound
             {
                 n = half
             }

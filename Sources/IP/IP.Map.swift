@@ -60,7 +60,7 @@ extension IP.Map
     {
         for (length, table):(UInt8, [Base: Value]) in self.binades
         {
-            if  let value:Value = table[needle / length]
+            if  let value:Value = table[needle.zeroMasked(to: length)]
             {
                 return value
             }

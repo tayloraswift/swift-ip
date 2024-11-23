@@ -6,6 +6,7 @@ let package:Package = .init(
     platforms: [.macOS(.v15), .iOS(.v18), .tvOS(.v18), .visionOS(.v2), .watchOS(.v11)],
     products: [
         .library(name: "Firewalls", targets: ["Firewalls"]),
+
         .library(name: "IP", targets: ["IP"]),
         .library(name: "IP_BSON", targets: ["IP_BSON"]),
         .library(name: "IP_NIOCore", targets: ["IP_NIOCore"]),
@@ -46,5 +47,18 @@ let package:Package = .init(
                 .product(name: "JSON", package: "swift-json"),
             ]),
 
+        .testTarget(name: "FirewallTests", dependencies: ["Firewalls"]),
         .testTarget(name: "IPTests", dependencies: ["IP"]),
     ])
+
+for target:PackageDescription.Target in package.targets
+{
+    {
+        var settings:[PackageDescription.SwiftSetting] = $0 ?? []
+
+        settings.append(.enableUpcomingFeature("ExistentialAny"))
+        settings.append(.enableExperimentalFeature("StrictConcurrency"))
+
+        $0 = settings
+    } (&target.swiftSettings)
+}

@@ -2,7 +2,7 @@ extension IP
 {
     /// An IPv6 address, which is 128 bits wide.
     @frozen public
-    struct V6:Address
+    struct V6:Address, ExpressibleByIntegerLiteral
     {
         /// The raw 128-bit address, in big-endian byte order. The byte at the lowest address
         /// appears in the high bits of the first hextet.
