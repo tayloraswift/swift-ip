@@ -43,6 +43,11 @@ extension IP.Address
     @inlinable public
     var value:Storage { .init(bigEndian: self.storage) }
 }
+extension IP.Address where Self:ExpressibleByIntegerLiteral, Self.IntegerLiteralType == Storage
+{
+    @inlinable public
+    init(integerLiteral:Storage) { self.init(value: integerLiteral) }
+}
 extension IP.Address where Self:Comparable
 {
     /// Compares two IP addresses by their logical ``value``.
@@ -65,22 +70,25 @@ extension IP.Address
         return mask.bigEndian
     }
 
-    /// Masks one IP address with another.
+    /// Replaces all bits in the IP address except for the leading number of `bits` with 0.
     @inlinable public
-    static func & (a:Self, b:Self) -> Self { .init(storage: a.storage & b.storage) }
-
-    /// Masks an IP address to the specified number of bits. The meaning of the slash (`/`)
-    /// operator follows CIDR notation.
-    @inlinable public
-    static func / (self:Self, bits:UInt8) -> Self
+    func zeroMasked(to bits:UInt8) -> Self
     {
         .init(storage: self.storage & Self.storageMask(ones: bits))
     }
 
     /// Replaces all bits in the IP address except for the leading number of `bits` with 1.
     @inlinable public
-    static func ^ (self:Self, bits:UInt8) -> Self
+    func onesMasked(to bits:UInt8) -> Self
     {
         .init(storage: self.storage | ~Self.storageMask(ones: bits))
+    }
+
+    /// Creates a CIDR block by masking this IP address to the specified number of bits.
+    /// The meaning of the slash (`/`) operator follows CIDR notation.
+    @inlinable public
+    static func / (self:Self, bits:UInt8) -> IP.Block<Self>
+    {
+        .init(base: self.zeroMasked(to: bits), bits: bits)
     }
 }
