@@ -3,6 +3,8 @@ import ISO
 
 extension IP
 {
+    /// A structure holding the various mappings constructed from a ``Firewall``, along with the
+    /// metadata for the Autonomous System (``AS``) mapping.
     @frozen public
     struct Mappings:Sendable
     {
@@ -31,6 +33,8 @@ extension IP
 }
 extension IP.Mappings
 {
+    /// Loads and validates the data stored in a ``Firewall``, preparing it for efficient IP
+    /// address lookups.
     public
     static func load(from firewall:IP.Firewall) throws -> Self
     {

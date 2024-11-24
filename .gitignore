@@ -1,7 +1,9 @@
 .ssgc
 .build
 .build.ssgc
-.ipinfo
-.vscode
+
+*.json
+*.bson
+*.bson.gz
 
 Package.resolved

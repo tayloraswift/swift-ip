@@ -31,4 +31,4 @@ jobs:
                 run: Scripts/Package
 
             -   name: Upload firewall
-                run: aws s3 cp .ipinfo/firewall.bson.gz s3://swiftinit/ipinfo/firewall.bson.gz
+                run: aws s3 cp firewall.bson.gz s3://swiftinit/ip/firewall.bson.gz
