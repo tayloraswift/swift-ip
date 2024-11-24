@@ -1,27 +1,28 @@
 import BSON
+import BSON_ISO
 import IP
+import ISO
 
 extension IP
 {
     @frozen public
-    struct Firewall
+    struct Firewall:Sendable
     {
         public
         var autonomousSystems:[AS]
         public
-        var whitelists:[Whitelist]
+        var countries:[Claims<ISO.Country>]
         public
-        var countries:[Country]
+        var claimants:[Claims<Claimant>]
 
         @inlinable public
-        init(
-            autonomousSystems:[AS] = [],
-            whitelists:[Whitelist] = [],
-            countries:[Country] = [])
+        init(autonomousSystems:[AS] = [],
+            countries:[Claims<ISO.Country>] = [],
+            claimants:[Claims<Claimant>] = [])
         {
             self.autonomousSystems = autonomousSystems
-            self.whitelists = whitelists
             self.countries = countries
+            self.claimants = claimants
         }
     }
 }
@@ -31,8 +32,8 @@ extension IP.Firewall
     enum CodingKey:String, Sendable
     {
         case autonomousSystems
-        case whitelists
         case countries
+        case claimants
     }
 }
 extension IP.Firewall:BSONDocumentEncodable
@@ -41,8 +42,8 @@ extension IP.Firewall:BSONDocumentEncodable
     func encode(to bson:inout BSON.DocumentEncoder<CodingKey>)
     {
         bson[.autonomousSystems] = self.autonomousSystems
-        bson[.whitelists] = self.whitelists
         bson[.countries] = self.countries
+        bson[.claimants] = self.claimants
     }
 }
 extension IP.Firewall:BSONDocumentDecodable
@@ -52,7 +53,7 @@ extension IP.Firewall:BSONDocumentDecodable
     {
         self.init(
             autonomousSystems: try bson[.autonomousSystems].decode(),
-            whitelists: try bson[.whitelists].decode(),
-            countries: try bson[.countries].decode())
+            countries: try bson[.countries].decode(),
+            claimants: try bson[.claimants].decode())
     }
 }

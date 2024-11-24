@@ -60,7 +60,7 @@ extension Main
             Autonomous Systems: \(autonomousSystems.count)
             """)
 
-        let countries:[IP.Country] = Self.compact(country: try .splitting(try .init(
+        let countries:[IP.Claims<ISO.Country>] = Self.compact(country: try .splitting(try .init(
                 contentsOf: URL.init(fileURLWithPath: self.country),
                 encoding: .utf8),
             where: \.isNewline))
@@ -70,7 +70,7 @@ extension Main
             Country Ranges (IPv6): \(countries.reduce(0) { $0 + $1.v6.count })
             Countries: \(countries.count)
             """)
-        for country:IP.Country in countries
+        for country:IP.Claims<ISO.Country> in countries
         {
             print("    \(country.id): (\(country.v4.count) IPv4, \(country.v6.count) IPv6)")
         }
@@ -103,11 +103,11 @@ extension Main
     }
 
     private
-    static func compact(country objects:[IPinfo.CountryRange]) -> [IP.Country]
+    static func compact(country objects:[IPinfo.CountryRange]) -> [IP.Claims<ISO.Country>]
     {
-        let table:[ISO.Country: IP.Country] = objects.reduce(into: [:])
+        let table:[ISO.Country: IP.Claims<ISO.Country>] = objects.reduce(into: [:])
         {
-            let empty:IP.Country = .init(id: $1.country)
+            let empty:IP.Claims<ISO.Country> = .init(id: $1.country)
 
             if  let first:IP.V4 = $1.first.v4,
                 let last:IP.V4 = $1.last.v4

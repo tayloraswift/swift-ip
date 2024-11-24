@@ -4,10 +4,10 @@ import IP
 extension IP
 {
     @frozen public
-    struct Whitelist:Identifiable
+    struct Claims<ID>:Identifiable where ID:Hashable
     {
         public
-        let id:WhitelistEntity
+        let id:ID
 
         public
         var v4:[ClosedRange<IP.V4>]
@@ -15,7 +15,7 @@ extension IP
         var v6:[ClosedRange<IP.V6>]
 
         @inlinable public
-        init(id:WhitelistEntity, v4:[ClosedRange<IP.V4>] = [], v6:[ClosedRange<IP.V6>] = [])
+        init(id:ID, v4:[ClosedRange<IP.V4>] = [], v6:[ClosedRange<IP.V6>] = [])
         {
             self.id = id
             self.v4 = v4
@@ -23,7 +23,10 @@ extension IP
         }
     }
 }
-extension IP.Whitelist
+extension IP.Claims:Sendable where ID:Sendable
+{
+}
+extension IP.Claims
 {
     @frozen public
     enum CodingKey:String, Sendable
@@ -33,7 +36,7 @@ extension IP.Whitelist
         case v6 = "6"
     }
 }
-extension IP.Whitelist:BSONDocumentEncodable
+extension IP.Claims:BSONDocumentEncodable, BSONEncodable where ID:BSONEncodable
 {
     public
     func encode(to bson:inout BSON.DocumentEncoder<CodingKey>)
@@ -43,7 +46,7 @@ extension IP.Whitelist:BSONDocumentEncodable
         bson[.v6] = IP.Buffer<IP.V6>.init(elidingEmpty: self.v6)
     }
 }
-extension IP.Whitelist:BSONDocumentDecodable
+extension IP.Claims:BSONDocumentDecodable, BSONDecodable where ID:BSONDecodable
 {
     public
     init(bson:BSON.DocumentDecoder<CodingKey>) throws

@@ -4,7 +4,7 @@ import IP
 extension IP
 {
     @frozen public
-    enum WhitelistEntity:String, BSONEncodable, BSONDecodable, Sendable
+    enum Claimant:String, BSONEncodable, BSONDecodable, Sendable
     {
         case github_actions
         case github_webhook

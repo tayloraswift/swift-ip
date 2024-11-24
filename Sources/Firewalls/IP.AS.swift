@@ -5,7 +5,7 @@ import IP_BSON
 extension IP
 {
     @frozen public
-    struct AS:Identifiable
+    struct AS:Identifiable, Sendable
     {
         public
         let id:ASN
@@ -34,6 +34,11 @@ extension IP
             self.name = name
         }
     }
+}
+extension IP.AS
+{
+    @inlinable public
+    var metadata:Metadata { .init(domain: self.domain, name: self.name) }
 }
 extension IP.AS
 {

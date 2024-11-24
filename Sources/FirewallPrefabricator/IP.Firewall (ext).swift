@@ -15,10 +15,10 @@ extension IP.Firewall
             self.countries[i].v4.sort { $0.lowerBound < $1.lowerBound }
             self.countries[i].v6.sort { $0.lowerBound < $1.lowerBound }
         }
-        for i:Int in self.whitelists.indices
+        for i:Int in self.claimants.indices
         {
-            self.whitelists[i].v4.sort { $0.lowerBound < $1.lowerBound }
-            self.whitelists[i].v6.sort { $0.lowerBound < $1.lowerBound }
+            self.claimants[i].v4.sort { $0.lowerBound < $1.lowerBound }
+            self.claimants[i].v6.sort { $0.lowerBound < $1.lowerBound }
         }
     }
 }

@@ -21,6 +21,9 @@ extension IP
         }
     }
 }
+extension IP.Mapping:Sendable where Color:Sendable
+{
+}
 extension IP.Mapping
 {
     @inlinable public

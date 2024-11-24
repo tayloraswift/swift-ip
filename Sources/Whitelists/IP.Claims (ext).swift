@@ -1,8 +1,8 @@
 import IP
 
-extension IP.Whitelist
+extension IP.Claims
 {
-    init(id:IP.WhitelistEntity, blocks:borrowing [IP.AnyCIDR])
+    init(id:ID, blocks:borrowing [IP.AnyCIDR])
     {
         self.init(id: id)
         self.extend(with: blocks)
