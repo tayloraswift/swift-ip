@@ -27,8 +27,21 @@ extension IP.Mapping:Sendable where Color:Sendable
 extension IP.Mapping
 {
     @inlinable public
-    func color(containing ip:IP.V6) -> Color?
+    subscript(v4 ip:IP.V4) -> Color?
     {
-        ip.v4.map(self.v4.color(containing:)) ?? self.v6.color(containing: ip)
+        self.v4.color(containing: ip)
+    }
+
+    @inlinable public
+    subscript(v6 ip:IP.V6) -> Color?
+    {
+        if  let v4:IP.V4 = ip.v4
+        {
+            self[v4: v4]
+        }
+        else
+        {
+            self.v6.color(containing: ip)
+        }
     }
 }
