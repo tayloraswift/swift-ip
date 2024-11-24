@@ -17,9 +17,17 @@ let package:Package = .init(
         .package(url: "https://github.com/tayloraswift/swift-bson", from: "0.1.0"),
         .package(url: "https://github.com/tayloraswift/swift-json", from: "1.1.1"),
 
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.75.0"),
     ],
     targets: [
+        .executableTarget(name: "FirewallPrefabricator",
+            dependencies: [
+                .target(name: "IPinfo"),
+                .target(name: "Whitelists"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]),
+
         .target(name: "Firewalls",
             dependencies: [
                 .target(name: "IP"),
@@ -42,6 +50,12 @@ let package:Package = .init(
             ]),
 
         .target(name: "IPinfo",
+            dependencies: [
+                .target(name: "Firewalls"),
+                .product(name: "JSON", package: "swift-json"),
+            ]),
+
+        .target(name: "Whitelists",
             dependencies: [
                 .target(name: "Firewalls"),
                 .product(name: "JSON", package: "swift-json"),

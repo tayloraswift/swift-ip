@@ -30,8 +30,5 @@ jobs:
                     IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
                 run: Scripts/Package
 
-            -   name: Upload national database
-                run: aws s3 cp .ipinfo/country.bson.gz s3://swiftinit/ipinfo/country.bson.gz
-
-            -   name: Upload ASN database
-                run: aws s3 cp .ipinfo/asn.bson.gz s3://swiftinit/ipinfo/asn.bson.gz
+            -   name: Upload firewall
+                run: aws s3 cp .ipinfo/firewall.bson.gz s3://swiftinit/ipinfo/firewall.bson.gz
