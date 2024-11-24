@@ -4,17 +4,17 @@ import IP
 extension IP.Firewall
 {
     public mutating
-    func attach(whitelist:SearchbotWhitelist, of entity:IP.WhitelistEntity)
+    func attach(whitelist:SearchbotWhitelist, of claimant:IP.Claimant)
     {
-        self.whitelists.append(.init(id: entity, blocks: whitelist.blocks))
+        self.claimants.append(.init(id: claimant, blocks: whitelist.blocks))
     }
 
     public mutating
     func attach(whitelist:GitHubWhitelist)
     {
-        var actions:IP.Whitelist = .init(id: .github_actions)
-        var webhook:IP.Whitelist = .init(id: .github_webhook)
-        var other:IP.Whitelist = .init(id: .github_other)
+        var actions:IP.Claims<IP.Claimant> = .init(id: .github_actions)
+        var webhook:IP.Claims<IP.Claimant> = .init(id: .github_webhook)
+        var other:IP.Claims<IP.Claimant> = .init(id: .github_other)
 
         actions.extend(with: whitelist.actions)
         actions.extend(with: whitelist.actionsMacOS)
@@ -30,8 +30,8 @@ extension IP.Firewall
         other.extend(with: whitelist.pages)
         other.extend(with: whitelist.dependabot)
 
-        self.whitelists.append(actions)
-        self.whitelists.append(webhook)
-        self.whitelists.append(other)
+        self.claimants.append(actions)
+        self.claimants.append(webhook)
+        self.claimants.append(other)
     }
 }

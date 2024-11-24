@@ -36,6 +36,9 @@ extension IP.Mapping.Table
         self.init(unchecked: intervals)
     }
 }
+extension IP.Mapping.Table:Sendable where Color:Sendable
+{
+}
 extension IP.Mapping.Table
 {
     @inlinable
