@@ -1,25 +1,25 @@
 import BSON
 import IP
 
-extension IP.V6
+extension IP
 {
-    /// An efficient serialized representation of a list of IPv6 ranges.
+    /// An efficient serialized representation of a list of IP ranges.
     ///
     /// This type empirically reduces uncompressed BSON size by about 50 percent, and compressed
     /// size by about 25 percent.
-    struct Buffer:Equatable, Sendable
+    struct Buffer<Bound>:Sendable where Bound:Address
     {
-        var elements:[ClosedRange<IP.V6>]
+        var elements:[ClosedRange<Bound>]
 
-        init(_ elements:[ClosedRange<IP.V6>])
+        init(_ elements:[ClosedRange<Bound>])
         {
             self.elements = elements
         }
     }
 }
-extension IP.V6.Buffer
+extension IP.Buffer
 {
-    init?(elidingEmpty elements:[ClosedRange<IP.V6>])
+    init?(elidingEmpty elements:[ClosedRange<Bound>])
     {
         if  elements.isEmpty
         {
@@ -32,7 +32,7 @@ extension IP.V6.Buffer
     }
 }
 
-extension IP.V6.Buffer:RandomAccessCollection
+extension IP.Buffer:RandomAccessCollection
 {
     var startIndex:Int { self.elements.startIndex }
 
@@ -40,30 +40,30 @@ extension IP.V6.Buffer:RandomAccessCollection
 
     subscript(position:Int) -> CodingElement
     {
-        let range:ClosedRange<IP.V6> = self.elements[position]
+        let range:ClosedRange<Bound> = self.elements[position]
         return (range.lowerBound.storage, range.upperBound.storage)
     }
 }
-extension IP.V6.Buffer:BSONArrayEncodable
+extension IP.Buffer:BSONArrayEncodable
 {
 }
-extension IP.V6.Buffer:BSONArrayDecodable
+extension IP.Buffer:BSONArrayDecodable
 {
-    typealias CodingElement = (UInt128, UInt128)
+    typealias CodingElement = (Bound.Storage, Bound.Storage)
 
     init(from bson:borrowing BSON.BinaryArray<CodingElement>) throws
     {
         self.init(bson.map
         {
-            let a:IP.V6 = .init(storage: $0)
-            let b:IP.V6 = .init(storage: $1)
+            let a:Bound = .init(storage: $0)
+            let b:Bound = .init(storage: $1)
             if  b < a
             {
-                return b ... a
+                return .init(uncheckedBounds: (b, a))
             }
             else
             {
-                return a ... b
+                return .init(uncheckedBounds: (a, b))
             }
         })
     }
