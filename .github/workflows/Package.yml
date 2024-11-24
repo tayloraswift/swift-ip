@@ -1,8 +1,9 @@
 name: package
 
 on:
-    pull_request:
-        branches: [ master ]
+    # This runs at the top of every hour
+    schedule:
+        - cron: "0 * * * *"
 
 jobs:
     linux:
