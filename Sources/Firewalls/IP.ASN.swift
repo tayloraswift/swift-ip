@@ -50,10 +50,18 @@ extension IP.ASN:LosslessStringConvertible
 }
 extension IP.ASN:BSONEncodable
 {
+    /// Encodes the ASN as a signed BSON ``Int32``, by mapping the range of the ``UInt32``
+    /// value to the range of an ``Int32``.
+    ///
+    /// The transformation effectively shifts the encoded values by ``Int32.min``. This ensures
+    /// the correct database sort behavior, but also means that the numeric values observable in
+    /// BSON dumps are nonsensical.
     @inlinable public
     func encode(to field:inout BSON.FieldEncoder)
     {
-        Int32.init(bitPattern: self.value).encode(to: &field)
+        //  0          - x = Int32.min
+        //  UInt32.max - x = Int32.max
+        (Int32.init(bitPattern: self.value) &+ Int32.min).encode(to: &field)
     }
 }
 extension IP.ASN:BSONDecodable
@@ -61,6 +69,6 @@ extension IP.ASN:BSONDecodable
     @inlinable public
     init(bson:BSON.AnyValue) throws
     {
-        self.init(value: UInt32.init(bitPattern: try Int32.init(bson: bson)))
+        self.init(value: UInt32.init(bitPattern: try Int32.init(bson: bson) &- Int32.min))
     }
 }
