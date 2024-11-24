@@ -30,5 +30,8 @@ jobs:
                     IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
                 run: Scripts/Package
 
+            -   name: Test firewall
+                run: swift run -c release FirewallUsage 98.223.208.128
+
             -   name: Upload firewall
                 run: aws s3 cp firewall.bson.gz s3://swiftinit/ip/firewall.bson.gz
