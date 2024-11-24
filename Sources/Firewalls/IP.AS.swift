@@ -4,6 +4,8 @@ import IP_BSON
 
 extension IP
 {
+    /// Describes an
+    /// [Autonomous System](https://en.wikipedia.org/wiki/Autonomous_system_(Internet)) (AS).
     @frozen public
     struct AS:Identifiable, Sendable
     {
