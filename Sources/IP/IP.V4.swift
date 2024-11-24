@@ -22,6 +22,14 @@ extension IP
 }
 extension IP.V4
 {
+    @inlinable public
+    init(_ a:UInt8, _ b:UInt8, _ c:UInt8, _ d:UInt8)
+    {
+        self.init(storage: unsafeBitCast((a, b, c, d), to: UInt32.self))
+    }
+}
+extension IP.V4
+{
     /// Returns the most common loopback address, `127.0.0.1`. Most people reaching for this
     /// API actually want ``IP.Block.loopback [5JXTL]``, which models the entire loopback range.
     @inlinable public
@@ -79,12 +87,6 @@ extension IP.V4:LosslessStringConvertible
             return nil
         }
 
-        let value:UInt32 =
-            UInt32.init(a) << 24 |
-            UInt32.init(b) << 16 |
-            UInt32.init(c) <<  8 |
-            UInt32.init(d)
-
-        self.init(value: value)
+        self.init(a, b, c, d)
     }
 }
