@@ -7,9 +7,6 @@ swift build -c release \
     --explicit-target-dependency-import-check=error \
     --target FirewallPrefabricator
 
-mkdir -p .ipinfo
-cd .ipinfo
-
 # If JSON files are not present, download them from ipinfo.io
 for file in asn country ; do
     if [ ! -f $file.json ]; then

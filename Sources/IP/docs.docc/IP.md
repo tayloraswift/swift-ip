@@ -14,8 +14,4 @@ This Foundation-free module provides tools for parsing and formatting IP address
 -   ``IP.Address``
 -   ``IP.V4``
 -   ``IP.V6``
-
-### Address tables
-
 -   ``IP.Block``
--   ``IP.Map``

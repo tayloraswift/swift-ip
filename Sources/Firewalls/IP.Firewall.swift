@@ -5,6 +5,7 @@ import ISO
 
 extension IP
 {
+    /// The data used to construct ``IP.Mappings``.
     @frozen public
     struct Firewall:Sendable
     {
