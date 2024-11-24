@@ -5,7 +5,7 @@ swift --version
 
 swift build -c release \
     --explicit-target-dependency-import-check=error \
-    --target IPinfoCompact
+    --target FirewallPrefabricator
 
 mkdir -p .ipinfo
 cd .ipinfo
@@ -26,9 +26,34 @@ for file in asn country ; do
     fi
 done
 
+if [ ! -f googlebot.json ]; then
+    curl -L https://developers.google.com/static/search/apis/ipranges/googlebot.json \
+        -o googlebot.json
+else
+    echo "Using existing googlebot.json"
+fi
 
-swift run -c release IPinfoCompact country.json country.bson
-swift run -c release IPinfoCompact asn.json asn.bson
+if [ ! -f bingbot.json ]; then
+    curl -L https://www.bing.com/toolbox/bingbot.json \
+        -o bingbot.json
+else
+    echo "Using existing bingbot.json"
+fi
 
-gzip -kf9 country.bson
-gzip -kf9 asn.bson
+if [ ! -f github.json ]; then
+    curl -L https://api.github.com/meta \
+        -o github.json
+else
+    echo "Using existing github.json"
+fi
+
+
+swift run -c release FirewallPrefabricator \
+    --country country.json \
+    --asn asn.json \
+    --googlebot googlebot.json \
+    --bingbot bingbot.json \
+    --github github.json \
+    --output firewall.bson \
+
+gzip -kf9 firewall.bson
