@@ -1,4 +1,4 @@
-name: package
+name: deploy
 
 on:
     # This runs on the 37th minute of every hour, which is a random number we choose to 
