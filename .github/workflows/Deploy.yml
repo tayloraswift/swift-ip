@@ -36,7 +36,7 @@ jobs:
                 run: swift run -c release FirewallUsage 98.223.208.128
 
             -   name: Upload firewall
-                run: |
-                    aws s3 cp firewall.bson.gz s3://swiftinit/ip/firewall.bson.gz \
-                        --content-encoding gzip \
+                run: >
+                    aws s3 cp firewall.bson.gz s3://swiftinit/ip/firewall.bson.gz
+                        --content-encoding gzip
                         --content-type application/bson
