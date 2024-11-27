@@ -1,87 +1,79 @@
 import Firewalls
 import IP
+import ISO
 import Testing
 
 @Suite
 struct Bisection
 {
-    @Test
-    static func validation() throws
+    @Test(arguments: [
+        [10 ... 19, 0 ... 9],
+        [0 ... 10, 10 ... 10],
+        [0 ... 10, 5 ... 10],
+        [0 ... 10, 0 ... 10],
+        [5 ... 15, 0 ... 10],
+    ])
+    static func validation(_ ranges:[ClosedRange<IP.V4>]) throws
     {
-        #expect(throws: (any Error).self)
-        {
-            try IP.Mapping<String>.init(v4: [(10 ... 19, "a"), (0 ... 9, "b")])
-        }
+        var image:IP.Firewall.Image = .init(autonomousSystems: [])
 
         #expect(throws: (any Error).self)
         {
-            try IP.Mapping<String>.init(v4: [(0 ... 10, "a"), (10 ... 10, "b")])
-        }
-
-        #expect(throws: (any Error).self)
-        {
-            try IP.Mapping<String>.init(v4: [(0 ... 10, "a"), (5 ... 10, "b")])
-        }
-
-        #expect(throws: (any Error).self)
-        {
-            try IP.Mapping<String>.init(v4: [(0 ... 10, "a"), (0 ... 10, "b")])
-        }
-
-        #expect(throws: (any Error).self)
-        {
-            try IP.Mapping<String>.init(v4: [(5 ... 15, "a"), (0 ... 10, "b")])
+            try image.color(v4: ranges.map { (0, .us, $0) }, v6: [])
         }
     }
 
     @Test
     static func bisection() throws
     {
-        let empty:IP.Mapping<String> = try .init(v4: [], v6: [])
+        let empty:IP.Firewall = .load(from: .init(autonomousSystems: []))
 
-        #expect(empty[v6: 0] == nil)
+        #expect(empty.lookup(v6: 0) == (nil, nil))
 
-        let ips:IP.Mapping<String> = try .init(
+        var image:IP.Firewall.Image = .init(autonomousSystems: [])
+        try image.color(
             v4: [
-                ( 1 ... 10, "a"),
-                (11 ... 20, "b"),
-                (22 ... 30, "c"),
+                (0, .us,  1 ... 10),
+                (0, .gb, 11 ... 20),
+                (0, .il, 22 ... 30),
             ],
             v6: [
-                (11 ... 20, "d"),
+                (0, .ua, 11 ... 20),
             ])
 
-        #expect(ips[v4: 0] == nil)
-        #expect(ips[v4: 1] == "a")
-        #expect(ips[v4: 9] == "a")
-        #expect(ips[v4: 10] == "a")
-        #expect(ips[v4: 11] == "b")
-        #expect(ips[v4: 19] == "b")
-        #expect(ips[v4: 20] == "b")
-        #expect(ips[v4: 21] == nil)
-        #expect(ips[v4: 22] == "c")
-        #expect(ips[v4: 30] == "c")
-        #expect(ips[v4: 31] == nil)
+        let firewall:IP.Firewall = .load(from: image)
 
-        #expect(ips[v6: .init(v4: 0)] == nil)
-        #expect(ips[v6: .init(v4: 1)] == "a")
-        #expect(ips[v6: .init(v4: 9)] == "a")
-        #expect(ips[v6: .init(v4: 10)] == "a")
-        #expect(ips[v6: .init(v4: 11)] == "b")
-        #expect(ips[v6: .init(v4: 19)] == "b")
-        #expect(ips[v6: .init(v4: 20)] == "b")
-        #expect(ips[v6: .init(v4: 21)] == nil)
-        #expect(ips[v6: .init(v4: 22)] == "c")
-        #expect(ips[v6: .init(v4: 30)] == "c")
-        #expect(ips[v6: .init(v4: 31)] == nil)
+        #expect(firewall.lookup(v6: 0).mapping?.country == nil)
+        #expect(firewall.lookup(v6: 1).mapping?.country == nil)
+        #expect(firewall.lookup(v6: 10).mapping?.country == nil)
+        #expect(firewall.lookup(v6: 11).mapping?.country == .ua)
+        #expect(firewall.lookup(v6: 19).mapping?.country == .ua)
+        #expect(firewall.lookup(v6: 20).mapping?.country == .ua)
+        #expect(firewall.lookup(v6: 21).mapping?.country == nil)
 
-        #expect(ips[v6: 0] == nil)
-        #expect(ips[v6: 1] == nil)
-        #expect(ips[v6: 10] == nil)
-        #expect(ips[v6: 11] == "d")
-        #expect(ips[v6: 19] == "d")
-        #expect(ips[v6: 20] == "d")
-        #expect(ips[v6: 21] == nil)
+        #expect(firewall.lookup(v4: 0).mapping?.country == nil)
+        #expect(firewall.lookup(v4: 1).mapping?.country == .us)
+        #expect(firewall.lookup(v4: 9).mapping?.country == .us)
+        #expect(firewall.lookup(v4: 10).mapping?.country == .us)
+        #expect(firewall.lookup(v4: 11).mapping?.country == .gb)
+        #expect(firewall.lookup(v4: 19).mapping?.country == .gb)
+        #expect(firewall.lookup(v4: 20).mapping?.country == .gb)
+        #expect(firewall.lookup(v4: 21).mapping?.country == nil)
+        #expect(firewall.lookup(v4: 22).mapping?.country == .il)
+        #expect(firewall.lookup(v4: 30).mapping?.country == .il)
+        #expect(firewall.lookup(v4: 31).mapping?.country == nil)
+
+        #expect(firewall.lookup(v6: .init(v4: 0)).mapping?.country == nil)
+        #expect(firewall.lookup(v6: .init(v4: 1)).mapping?.country == .us)
+        #expect(firewall.lookup(v6: .init(v4: 9)).mapping?.country == .us)
+        #expect(firewall.lookup(v6: .init(v4: 10)).mapping?.country == .us)
+        #expect(firewall.lookup(v6: .init(v4: 11)).mapping?.country == .gb)
+        #expect(firewall.lookup(v6: .init(v4: 19)).mapping?.country == .gb)
+        #expect(firewall.lookup(v6: .init(v4: 20)).mapping?.country == .gb)
+        #expect(firewall.lookup(v6: .init(v4: 21)).mapping?.country == nil)
+        #expect(firewall.lookup(v6: .init(v4: 22)).mapping?.country == .il)
+        #expect(firewall.lookup(v6: .init(v4: 30)).mapping?.country == .il)
+        #expect(firewall.lookup(v6: .init(v4: 31)).mapping?.country == nil)
     }
 
     @Test
@@ -95,36 +87,39 @@ struct Bisection
             0xEEEE_EEEE_EEEE_EEEE_EEEE_0000_0000_0000 / 80,
         ]
 
-        let ips:IP.Mapping<Void> = try .init(v6: blocks.map { ($0.range, ()) })
+        var image:IP.Firewall.Image = .init(autonomousSystems: [])
+        try image.color(v4: [], v6: blocks.map { (0, .us, $0.range) })
 
-        #expect(ips[v6: 0xAAAA_AAAA_AAAA_AAA9_FFFF_FFFF_FFFF_FFFF] == nil)
-        #expect(ips[v6: 0xAAAA_AAAA_AAAA_AAAA_0000_0000_0000_0000] != nil)
-        #expect(ips[v6: 0xAAAA_AAAA_AAAA_AAAA_0000_0000_0000_0001] != nil)
-        #expect(ips[v6: 0xAAAA_AAAA_AAAA_AAAA_FFFF_FFFF_FFFF_FFFF] != nil)
-        #expect(ips[v6: 0xAAAA_AAAA_AAAA_AAAB_0000_0000_0000_0000] == nil)
+        let firewall:IP.Firewall = .load(from: image)
 
-        #expect(ips[v6: 0xBBBB_BBBB_BBBB_BBBB_AFFF_FFFF_FFFF_FFFF] == nil)
-        #expect(ips[v6: 0xBBBB_BBBB_BBBB_BBBB_B000_0000_0000_0000] != nil)
-        #expect(ips[v6: 0xBBBB_BBBB_BBBB_BBBB_B000_0000_0000_0001] != nil)
-        #expect(ips[v6: 0xBBBB_BBBB_BBBB_BBBB_BFFF_FFFF_FFFF_FFFF] != nil)
-        #expect(ips[v6: 0xBBBB_BBBB_BBBB_BBBB_C000_0000_0000_0000] == nil)
+        #expect(firewall.lookup(v6: 0xAAAA_AAAA_AAAA_AAA9_FFFF_FFFF_FFFF_FFFF).mapping == nil)
+        #expect(firewall.lookup(v6: 0xAAAA_AAAA_AAAA_AAAA_0000_0000_0000_0000).mapping != nil)
+        #expect(firewall.lookup(v6: 0xAAAA_AAAA_AAAA_AAAA_0000_0000_0000_0001).mapping != nil)
+        #expect(firewall.lookup(v6: 0xAAAA_AAAA_AAAA_AAAA_FFFF_FFFF_FFFF_FFFF).mapping != nil)
+        #expect(firewall.lookup(v6: 0xAAAA_AAAA_AAAA_AAAB_0000_0000_0000_0000).mapping == nil)
 
-        #expect(ips[v6: 0xCCCC_CCCC_CCCC_CCCC_CBFF_FFFF_FFFF_FFFF] == nil)
-        #expect(ips[v6: 0xCCCC_CCCC_CCCC_CCCC_CC00_0000_0000_0000] != nil)
-        #expect(ips[v6: 0xCCCC_CCCC_CCCC_CCCC_CC00_0000_0000_0001] != nil)
-        #expect(ips[v6: 0xCCCC_CCCC_CCCC_CCCC_CCFF_FFFF_FFFF_FFFF] != nil)
-        #expect(ips[v6: 0xCCCC_CCCC_CCCC_CCCC_CD00_0000_0000_0000] == nil)
+        #expect(firewall.lookup(v6: 0xBBBB_BBBB_BBBB_BBBB_AFFF_FFFF_FFFF_FFFF).mapping == nil)
+        #expect(firewall.lookup(v6: 0xBBBB_BBBB_BBBB_BBBB_B000_0000_0000_0000).mapping != nil)
+        #expect(firewall.lookup(v6: 0xBBBB_BBBB_BBBB_BBBB_B000_0000_0000_0001).mapping != nil)
+        #expect(firewall.lookup(v6: 0xBBBB_BBBB_BBBB_BBBB_BFFF_FFFF_FFFF_FFFF).mapping != nil)
+        #expect(firewall.lookup(v6: 0xBBBB_BBBB_BBBB_BBBB_C000_0000_0000_0000).mapping == nil)
 
-        #expect(ips[v6: 0xDDDD_DDDD_DDDD_DDDD_DDCF_FFFF_FFFF_FFFF] == nil)
-        #expect(ips[v6: 0xDDDD_DDDD_DDDD_DDDD_DDD0_0000_0000_0000] != nil)
-        #expect(ips[v6: 0xDDDD_DDDD_DDDD_DDDD_DDD0_0000_0000_0001] != nil)
-        #expect(ips[v6: 0xDDDD_DDDD_DDDD_DDDD_DDDF_FFFF_FFFF_FFFF] != nil)
-        #expect(ips[v6: 0xDDDD_DDDD_DDDD_DDDD_DDE0_0000_0000_0000] == nil)
+        #expect(firewall.lookup(v6: 0xCCCC_CCCC_CCCC_CCCC_CBFF_FFFF_FFFF_FFFF).mapping == nil)
+        #expect(firewall.lookup(v6: 0xCCCC_CCCC_CCCC_CCCC_CC00_0000_0000_0000).mapping != nil)
+        #expect(firewall.lookup(v6: 0xCCCC_CCCC_CCCC_CCCC_CC00_0000_0000_0001).mapping != nil)
+        #expect(firewall.lookup(v6: 0xCCCC_CCCC_CCCC_CCCC_CCFF_FFFF_FFFF_FFFF).mapping != nil)
+        #expect(firewall.lookup(v6: 0xCCCC_CCCC_CCCC_CCCC_CD00_0000_0000_0000).mapping == nil)
 
-        #expect(ips[v6: 0xEEEE_EEEE_EEEE_EEEE_EEED_FFFF_FFFF_FFFF] == nil)
-        #expect(ips[v6: 0xEEEE_EEEE_EEEE_EEEE_EEEE_0000_0000_0000] != nil)
-        #expect(ips[v6: 0xEEEE_EEEE_EEEE_EEEE_EEEE_0000_0000_0001] != nil)
-        #expect(ips[v6: 0xEEEE_EEEE_EEEE_EEEE_EEEE_FFFF_FFFF_FFFF] != nil)
-        #expect(ips[v6: 0xEEEE_EEEE_EEEE_EEEE_EEEF_0000_0000_0000] == nil)
+        #expect(firewall.lookup(v6: 0xDDDD_DDDD_DDDD_DDDD_DDCF_FFFF_FFFF_FFFF).mapping == nil)
+        #expect(firewall.lookup(v6: 0xDDDD_DDDD_DDDD_DDDD_DDD0_0000_0000_0000).mapping != nil)
+        #expect(firewall.lookup(v6: 0xDDDD_DDDD_DDDD_DDDD_DDD0_0000_0000_0001).mapping != nil)
+        #expect(firewall.lookup(v6: 0xDDDD_DDDD_DDDD_DDDD_DDDF_FFFF_FFFF_FFFF).mapping != nil)
+        #expect(firewall.lookup(v6: 0xDDDD_DDDD_DDDD_DDDD_DDE0_0000_0000_0000).mapping == nil)
+
+        #expect(firewall.lookup(v6: 0xEEEE_EEEE_EEEE_EEEE_EEED_FFFF_FFFF_FFFF).mapping == nil)
+        #expect(firewall.lookup(v6: 0xEEEE_EEEE_EEEE_EEEE_EEEE_0000_0000_0000).mapping != nil)
+        #expect(firewall.lookup(v6: 0xEEEE_EEEE_EEEE_EEEE_EEEE_0000_0000_0001).mapping != nil)
+        #expect(firewall.lookup(v6: 0xEEEE_EEEE_EEEE_EEEE_EEEE_FFFF_FFFF_FFFF).mapping != nil)
+        #expect(firewall.lookup(v6: 0xEEEE_EEEE_EEEE_EEEE_EEEF_0000_0000_0000).mapping == nil)
     }
 }

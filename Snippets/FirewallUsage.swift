@@ -33,28 +33,25 @@ else
 let data:Data = try .init(contentsOf: URL.init(fileURLWithPath: "firewall.bson"))
 let bson:BSON.Document = .init(bytes: [UInt8].init(data)[...])
 
-let firewall:IP.Firewall = try .init(bson: bson)
-let mappings:IP.Mappings = try .load(from: firewall)
-
+let firewall:IP.Firewall = .load(from: try IP.Firewall.Image.init(bson: bson))
+let (mapping, claimant):(IP.Mapping?, IP.Claimant?) = firewall.lookup(v6: ip)
 
 guard
-let country:ISO.Country = mappings.countries[v6: ip],
-let asn:IP.ASN = mappings.autonomousSystems[v6: ip]
+let mapping:IP.Mapping
 else
 {
     fatalError("No Country/ASN found for \(ip)")
 }
 
-guard
-let metadata:IP.AS.Metadata = mappings.autonomousSystemMetadata[asn]
-else
-{
-    fatalError("No AS metadata found for \(asn)")
-}
-
 print("""
     Address: \(ip)
-    Country: \(country)
-    ASN: \(asn)
-    AS: \(metadata.domain) (\(metadata.name))
+    Country: \(mapping.country)
     """)
+
+if  let autonomousSystem:IP.AS = mapping.autonomousSystem
+{
+    print("""
+        ASN: \(autonomousSystem.number)
+        AS: \(autonomousSystem.domain) (\(autonomousSystem.name))
+        """)
+}

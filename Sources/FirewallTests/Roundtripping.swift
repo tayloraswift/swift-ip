@@ -18,11 +18,11 @@ struct Roundtripping
     ] as [IP.ASN])
     static func asn(_ asn:IP.ASN) throws
     {
-        let expected:IP.AS = .init(id: asn, domain: "", name: "")
+        let expected:IP.AS = .init(number: asn, domain: "", name: "")
 
         let encoded:BSON.Document = .init(encoding: expected)
         let decoded:IP.AS = try .init(bson: encoded)
 
-        #expect(decoded.id == expected.id)
+        #expect(decoded.number == expected.number)
     }
 }

@@ -47,6 +47,9 @@ extension IP.Block<IP.V4>
 extension IP.Block
 {
     @inlinable public
+    func contains(_ ip:Base) -> Bool { self.base == ip.zeroMasked(to: self.bits) }
+
+    @inlinable public
     var range:ClosedRange<Base> { self.base ... self.base.onesMasked(to: self.bits) }
 }
 extension IP.Block:CustomStringConvertible
