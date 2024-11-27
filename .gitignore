@@ -3,6 +3,7 @@
 .build.ssgc
 
 *.json
+*.json.gz
 *.bson
 *.bson.gz
 
