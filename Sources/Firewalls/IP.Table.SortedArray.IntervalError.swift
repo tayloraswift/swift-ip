@@ -1,13 +1,13 @@
 import IP
 
-extension IP.Mapping.Table
+extension IP.Table.SortedArray where Bound:Sendable
 {
     enum IntervalError:Error
     {
         case nonmonotonic(ClosedRange<Bound>, ClosedRange<Bound>)
     }
 }
-extension IP.Mapping.Table.IntervalError:CustomStringConvertible
+extension IP.Table.SortedArray.IntervalError:CustomStringConvertible
 {
     var description:String
     {

@@ -30,3 +30,7 @@ extension IP.V6:BSONBinaryDecodable
         }
     }
 }
+
+extension IP.V6:BSON.BinaryPackable
+{
+}

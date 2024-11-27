@@ -1,4 +1,5 @@
 import IP
+import Firewalls
 import JSON
 
 /// The common whitelist API format shared between
@@ -12,6 +13,16 @@ struct SearchbotWhitelist
     init(blocks:[IP.AnyCIDR])
     {
         self.blocks = blocks
+    }
+}
+extension SearchbotWhitelist
+{
+    public
+    func add(to claims:inout [IP.Claims], as id:IP.Claimant)
+    {
+        var crawler:IP.Claims = .init(id: id)
+        crawler.extend(with: self.blocks)
+        claims.append(crawler)
     }
 }
 extension SearchbotWhitelist:JSONObjectDecodable

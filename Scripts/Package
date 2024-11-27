@@ -8,7 +8,7 @@ swift build -c release \
     --target FirewallPrefabricator
 
 # If JSON files are not present, download them from ipinfo.io
-for file in asn country ; do
+for file in country_asn ; do
     if [ ! -f $file.json ]; then
         if [ -z "$IPINFO_TOKEN" ]; then
             echo "error: IPINFO_TOKEN is not set"
@@ -46,8 +46,7 @@ fi
 
 
 swift run -c release FirewallPrefabricator \
-    --country country.json \
-    --asn asn.json \
+    --ipinfo country_asn.json \
     --googlebot googlebot.json \
     --bingbot bingbot.json \
     --github github.json \
