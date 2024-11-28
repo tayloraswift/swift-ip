@@ -8,7 +8,7 @@ extension IP
     ///
     /// IP mappings can be quite large, so you should always ensure the machine you are using
     /// them on has enough memory to store them.
-    @frozen @usableFromInline
+    @frozen public
     struct Table<Color> where Color:BSON.BinaryPackable
     {
         @usableFromInline
@@ -43,7 +43,7 @@ extension IP.Table
     ///
     /// >   Complexity:
     ///     *O*(log *n*), where *n* is the number of ranges in the IPv4 subtable.
-    @inlinable
+    @inlinable public
     subscript(v4 ip:IP.V4) -> Color?
     {
         self.v4.color(containing: ip)
@@ -55,7 +55,7 @@ extension IP.Table
     ///
     /// >   Complexity:
     ///     *O*(log *n*), where *n* is the number of ranges in the corresponding subtable.
-    @inlinable
+    @inlinable public
     subscript(v6 ip:IP.V6) -> Color?
     {
         if  let v4:IP.V4 = ip.v4

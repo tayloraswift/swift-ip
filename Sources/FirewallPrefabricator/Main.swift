@@ -33,9 +33,14 @@ struct Main:ParsableCommand
     var github:String
 
     @Option(
-        name: [.customLong("ipinfo")],
-        help: "IPinfo JSON file")
-    var ipinfo:String
+        name: [.customLong("country")],
+        help: "IPinfo Countries JSON file")
+    var country:String
+
+    @Option(
+        name: [.customLong("asn")],
+        help: "IPinfo Autonomous Systems JSON file")
+    var asn:String
 
     @Option(
         name: [.customLong("output"), .customShort("o")],
@@ -47,7 +52,12 @@ extension Main
     func run() throws
     {
         var image:IP.Firewall.Image = try .build(from: try .splitting(try .init(
-                contentsOf: URL.init(fileURLWithPath: self.ipinfo),
+                contentsOf: URL.init(fileURLWithPath: self.asn),
+                encoding: .utf8),
+            where: \.isNewline))
+
+        try image.colorByCountry(from: try .splitting(try .init(
+                contentsOf: URL.init(fileURLWithPath: self.country),
                 encoding: .utf8),
             where: \.isNewline))
 
@@ -69,7 +79,7 @@ extension Main
         bingbot.add(to: &claims, as: .microsoft_bingbot)
         github.add(to: &claims)
 
-        try image.claim(claims)
+        try image.colorByClaimant(claims)
 
         let bson:BSON.Document = .init(encoding: image)
         try Data.init(bson.bytes).write(to: URL.init(fileURLWithPath: self.output))

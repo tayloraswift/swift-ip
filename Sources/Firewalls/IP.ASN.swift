@@ -48,6 +48,14 @@ extension IP.ASN:LosslessStringConvertible
         self.init(value: value)
     }
 }
+extension IP.ASN:BSON.BinaryPackable
+{
+    @inlinable public
+    static func get(_ storage:UInt32) -> Self { .init(value: .get(storage)) }
+
+    @inlinable public
+    consuming func set() -> UInt32 { self.value.set() }
+}
 extension IP.ASN:BSONEncodable
 {
     /// Encodes the ASN as a signed BSON ``Int32``, by mapping the range of the ``UInt32``
