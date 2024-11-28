@@ -12,59 +12,93 @@ extension IP.Firewall
         @usableFromInline
         var autonomousSystems:[IP.AS]
         @usableFromInline
+        var asn:IP.Table<IP.ASN>
+        @usableFromInline
+        var country:IP.Table<ISO.Country>
+        @usableFromInline
+        var claimant:IP.Table<Int32>
+        @usableFromInline
         var claimants:[IP.Claimant]
-
-        @usableFromInline
-        var colors:IP.Table<IP.Color>
-        @usableFromInline
-        var claims:IP.Table<Int32>
 
         @inlinable public
         init(autonomousSystems:[IP.AS] = [])
         {
             self.autonomousSystems = autonomousSystems
+            self.asn = .init()
+            self.country = .init()
+            self.claimant = .init()
             self.claimants = []
-            self.colors = .init()
-            self.claims = .init()
         }
     }
 }
 extension IP.Firewall.Image
 {
     public mutating
-    func color(
-        v4:[(IP.ASN, ISO.Country, ip:ClosedRange<IP.V4>)],
-        v6:[(IP.ASN, ISO.Country, ip:ClosedRange<IP.V6>)]) throws
+    func colorByASN(
+        v4:[(IP.ASN, ip:ClosedRange<IP.V4>)],
+        v6:[(IP.ASN, ip:ClosedRange<IP.V6>)]) throws
     {
         var v4Ranges:BSON._BinaryArray<ClosedRange<IP.V4>> = .init(count: v4.count)
-        var v4Colors:BSON._BinaryArray<IP.Color> = .init(count: v4.count)
+        var v4Colors:BSON._BinaryArray<IP.ASN> = .init(count: v4.count)
 
-        for (i, (asn, country, ip)):(Int, (IP.ASN, ISO.Country, ClosedRange<IP.V4>)) in zip(
+        for (i, (asn, ip)):(Int, (IP.ASN, ClosedRange<IP.V4>)) in zip(
             v4Ranges.indices,
             v4)
         {
             v4Ranges[i] = ip
-            v4Colors[i] = .init(country: country, asn: asn)
+            v4Colors[i] = asn
         }
 
         var v6Ranges:BSON._BinaryArray<ClosedRange<IP.V6>> = .init(count: v6.count)
-        var v6Colors:BSON._BinaryArray<IP.Color> = .init(count: v6.count)
+        var v6Colors:BSON._BinaryArray<IP.ASN> = .init(count: v6.count)
 
-        for (i, (asn, country, ip)):(Int, (IP.ASN, ISO.Country, ClosedRange<IP.V6>)) in zip(
+        for (i, (asn, ip)):(Int, (IP.ASN, ClosedRange<IP.V6>)) in zip(
             v6Ranges.indices,
             v6)
         {
             v6Ranges[i] = ip
-            v6Colors[i] = .init(country: country, asn: asn)
+            v6Colors[i] = asn
         }
 
-        self.colors = .init(
+        self.asn = .init(
             v4: try .init(checking: v4Ranges, colors: v4Colors),
             v6: try .init(checking: v6Ranges, colors: v6Colors))
     }
 
     public mutating
-    func claim(
+    func colorByCountry(
+        v4:[(ISO.Country, ip:ClosedRange<IP.V4>)],
+        v6:[(ISO.Country, ip:ClosedRange<IP.V6>)]) throws
+    {
+        var v4Ranges:BSON._BinaryArray<ClosedRange<IP.V4>> = .init(count: v4.count)
+        var v4Colors:BSON._BinaryArray<ISO.Country> = .init(count: v4.count)
+
+        for (i, (country, ip)):(Int, (ISO.Country, ClosedRange<IP.V4>)) in zip(
+            v4Ranges.indices,
+            v4)
+        {
+            v4Ranges[i] = ip
+            v4Colors[i] = country
+        }
+
+        var v6Ranges:BSON._BinaryArray<ClosedRange<IP.V6>> = .init(count: v6.count)
+        var v6Colors:BSON._BinaryArray<ISO.Country> = .init(count: v6.count)
+
+        for (i, (country, ip)):(Int, (ISO.Country, ClosedRange<IP.V6>)) in zip(
+            v6Ranges.indices,
+            v6)
+        {
+            v6Ranges[i] = ip
+            v6Colors[i] = country
+        }
+
+        self.country = .init(
+            v4: try .init(checking: v4Ranges, colors: v4Colors),
+            v6: try .init(checking: v6Ranges, colors: v6Colors))
+    }
+
+    public mutating
+    func colorByClaimant(
         v4:[(IP.Claimant, ip:ClosedRange<IP.V4>)],
         v6:[(IP.Claimant, ip:ClosedRange<IP.V6>)]) throws
     {
@@ -115,7 +149,7 @@ extension IP.Firewall.Image
             v6Claims[i] = index(claimant)
         }
 
-        self.claims = .init(
+        self.claimant = .init(
             v4: try .init(checking: v4Ranges, colors: v4Claims),
             v6: try .init(checking: v6Ranges, colors: v6Claims))
     }
@@ -126,15 +160,23 @@ extension IP.Firewall.Image
     enum CodingKey:String, Sendable
     {
         case autonomousSystems
+
+        case asn_v4_ranges
+        case asn_v4_colors
+        case asn_v6_ranges
+        case asn_v6_colors
+
+        case country_v4_ranges
+        case country_v4_colors
+        case country_v6_ranges
+        case country_v6_colors
+
+        case claimant_v4_ranges
+        case claimant_v4_colors
+        case claimant_v6_ranges
+        case claimant_v6_colors
+
         case claimants
-        case colors_v4_ranges
-        case colors_v4_colors
-        case colors_v6_ranges
-        case colors_v6_colors
-        case claims_v4_ranges
-        case claims_v4_colors
-        case claims_v6_ranges
-        case claims_v6_colors
     }
 }
 extension IP.Firewall.Image:BSONDocumentEncodable
@@ -143,17 +185,23 @@ extension IP.Firewall.Image:BSONDocumentEncodable
     func encode(to bson:inout BSON.DocumentEncoder<CodingKey>)
     {
         bson[.autonomousSystems] = self.autonomousSystems
+
+        bson[.asn_v4_ranges] = self.asn.v4.ranges
+        bson[.asn_v4_colors] = self.asn.v4.colors
+        bson[.asn_v6_ranges] = self.asn.v6.ranges
+        bson[.asn_v6_colors] = self.asn.v6.colors
+
+        bson[.country_v4_ranges] = self.country.v4.ranges
+        bson[.country_v4_colors] = self.country.v4.colors
+        bson[.country_v6_ranges] = self.country.v6.ranges
+        bson[.country_v6_colors] = self.country.v6.colors
+
+        bson[.claimant_v4_ranges] = self.claimant.v4.ranges
+        bson[.claimant_v4_colors] = self.claimant.v4.colors
+        bson[.claimant_v6_ranges] = self.claimant.v6.ranges
+        bson[.claimant_v6_colors] = self.claimant.v6.colors
+
         bson[.claimants] = self.claimants
-
-        bson[.colors_v4_ranges] = self.colors.v4.ranges
-        bson[.colors_v4_colors] = self.colors.v4.colors
-        bson[.colors_v6_ranges] = self.colors.v6.ranges
-        bson[.colors_v6_colors] = self.colors.v6.colors
-
-        bson[.claims_v4_ranges] = self.claims.v4.ranges
-        bson[.claims_v4_colors] = self.claims.v4.colors
-        bson[.claims_v6_ranges] = self.claims.v6.ranges
-        bson[.claims_v6_colors] = self.claims.v6.colors
     }
 }
 extension IP.Firewall.Image:BSONDocumentDecodable
@@ -163,20 +211,30 @@ extension IP.Firewall.Image:BSONDocumentDecodable
     {
         self.init(autonomousSystems: try bson[.autonomousSystems].decode())
 
+        self.asn = .init(
+            v4: try .init(
+                checking: bson[.asn_v4_ranges].decode(),
+                colors: bson[.asn_v4_colors].decode()),
+            v6: try .init(
+                checking: bson[.asn_v6_ranges].decode(),
+                colors: bson[.asn_v6_colors].decode()))
+
+        self.country = .init(
+            v4: try .init(
+                checking: bson[.country_v4_ranges].decode(),
+                colors: bson[.country_v4_colors].decode()),
+            v6: try .init(
+                checking: bson[.country_v6_ranges].decode(),
+                colors: bson[.country_v6_colors].decode()))
+
+        self.claimant = .init(
+            v4: try .init(
+                checking: bson[.claimant_v4_ranges].decode(),
+                colors: bson[.claimant_v4_colors].decode()),
+            v6: try .init(
+                checking: bson[.claimant_v6_ranges].decode(),
+                colors: bson[.claimant_v6_colors].decode()))
+
         self.claimants = try bson[.claimants].decode()
-        self.colors = .init(
-            v4: try .init(
-                checking: bson[.colors_v4_ranges].decode(),
-                colors: bson[.colors_v4_colors].decode()),
-            v6: try .init(
-                checking: bson[.colors_v6_ranges].decode(),
-                colors: bson[.colors_v6_colors].decode()))
-        self.claims = .init(
-            v4: try .init(
-                checking: bson[.claims_v4_ranges].decode(),
-                colors: bson[.claims_v4_colors].decode()),
-            v6: try .init(
-                checking: bson[.claims_v6_ranges].decode(),
-                colors: bson[.claims_v6_colors].decode()))
     }
 }
