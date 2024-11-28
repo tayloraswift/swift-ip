@@ -34,24 +34,29 @@ let data:Data = try .init(contentsOf: URL.init(fileURLWithPath: "firewall.bson")
 let bson:BSON.Document = .init(bytes: [UInt8].init(data)[...])
 
 let firewall:IP.Firewall = .load(from: try IP.Firewall.Image.init(bson: bson))
-let (mapping, claimant):(IP.Mapping?, IP.Claimant?) = firewall.lookup(v6: ip)
 
 guard
-let mapping:IP.Mapping
+let country:ISO.Country = firewall.country[v6: ip]
 else
 {
-    fatalError("No Country/ASN found for \(ip)")
+    fatalError("No Country found for \(ip)")
 }
 
 print("""
     Address: \(ip)
-    Country: \(mapping.country)
+    Country: \(country)
     """)
 
-if  let autonomousSystem:IP.AS = mapping.autonomousSystem
+let (system, _):(IP.AS?, IP.Claimant?) = firewall.lookup(v6: ip)
+
+guard
+let system:IP.AS
+else
 {
-    print("""
-        ASN: \(autonomousSystem.number)
-        AS: \(autonomousSystem.domain) (\(autonomousSystem.name))
-        """)
+    fatalError("No ASN found for \(ip)")
 }
+
+print("""
+    ASN: \(system.number)
+    AS: \(system.domain) (\(system.name))
+    """)
