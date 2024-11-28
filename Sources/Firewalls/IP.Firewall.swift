@@ -1,6 +1,7 @@
 import BSON
 import BSON_ISO
 import IP
+import ISO
 
 extension IP
 {
@@ -9,26 +10,32 @@ extension IP
     {
         private
         let autonomousSystems:[ASN: AS.Metadata]
+
+        public
+        let asn:Table<ASN>
+        public
+        let country:Table<ISO.Country>
+
+        private
+        let claimant:Table<Int32>
         private
         let claimants:[Claimant]
-        private
-        let colors:Table<Color>
-        private
-        let claims:Table<Int32>
         private
         let loopback:Claimant?
 
         init(
             autonomousSystems:[ASN: AS.Metadata],
+            asn:Table<ASN>,
+            country:Table<ISO.Country>,
+            claimant:Table<Int32>,
             claimants:[Claimant],
-            colors:Table<Color>,
-            claims:Table<Int32>,
-            loopback:Claimant? = nil)
+            loopback:Claimant?)
         {
             self.autonomousSystems = autonomousSystems
+            self.asn = asn
+            self.country = country
+            self.claimant = claimant
             self.claimants = claimants
-            self.colors = colors
-            self.claims = claims
             self.loopback = loopback
         }
     }
@@ -45,52 +52,50 @@ extension IP.Firewall
         }
 
         return .init(autonomousSystems: autonomousSystems,
+            asn: image.asn,
+            country: image.country,
+            claimant: image.claimant,
             claimants: image.claimants,
-            colors: image.colors,
-            claims: image.claims,
             loopback: loopback)
     }
 
     public
-    func lookup(v4 ip:IP.V4) -> (mapping:IP.Mapping?, claimant:IP.Claimant?)
+    func lookup(v4 ip:IP.V4) -> (IP.AS?, IP.Claimant?)
     {
-        let color:IP.Color? = self.colors[v4: ip]
-        let claimant:Int32? = self.claims[v4: ip]
-        return self.symbolicate(color: color,
+        let asn:IP.ASN? = self.asn[v4: ip]
+        let claimant:Int32? = self.claimant[v4: ip]
+        return self.symbolicate(asn: asn,
             claimant: claimant,
             loopback: IP.Block<IP.V4>.loopback.contains(ip))
     }
     public
-    func lookup(v6 ip:IP.V6) -> (mapping:IP.Mapping?, claimant:IP.Claimant?)
+    func lookup(v6 ip:IP.V6) -> (IP.AS?, IP.Claimant?)
     {
-        let color:IP.Color? = self.colors[v6: ip]
-        let claimant:Int32? = self.claims[v6: ip]
-        return self.symbolicate(color: color,
+        let asn:IP.ASN? = self.asn[v6: ip]
+        let claimant:Int32? = self.claimant[v6: ip]
+        return self.symbolicate(asn: asn,
             claimant: claimant,
             loopback: IP.Block<IP.V6>.loopback.contains(ip))
     }
 
     private
-    func symbolicate(color:IP.Color?,
+    func symbolicate(asn:IP.ASN?,
         claimant:Int32?,
-        loopback:Bool) -> (IP.Mapping?, IP.Claimant?)
+        loopback:Bool) -> (IP.AS?, IP.Claimant?)
     {
-        let claimant:IP.Claimant? = claimant.map { self.claimants[Int.init($0)] }
-        let mapping:IP.Mapping? = color.map
+        let autonomousSystem:IP.AS?
+        if  let asn:IP.ASN,
+            let metadata:IP.AS.Metadata = self.autonomousSystems[asn]
         {
-            let autonomousSystem:IP.AS?
-            if  let metadata:IP.AS.Metadata = self.autonomousSystems[$0.asn]
-            {
-                autonomousSystem = .init(number: $0.asn, metadata: metadata)
-            }
-            else
-            {
-                autonomousSystem = nil
-            }
-
-            return .init(autonomousSystem: autonomousSystem, country: $0.country)
+            autonomousSystem = .init(number: asn, metadata: metadata)
+        }
+        else
+        {
+            autonomousSystem = nil
         }
 
-        return (mapping, claimant ?? (loopback ? self.loopback : nil))
+        let claimant:IP.Claimant? = claimant.map { self.claimants[Int.init($0)] }
+
+        return (autonomousSystem, claimant ?? (loopback ? self.loopback : nil))
     }
 }
