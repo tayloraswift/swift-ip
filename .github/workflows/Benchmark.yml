@@ -33,63 +33,81 @@ jobs:
 
             -   name: Run test application (300MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 300m \
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 300m \
+                        --memory 300m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
 
             -   name: Run test application (200MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 200m \
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 200m \
+                        --memory 200m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
 
             -   name: Run test application (160MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 160m \
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 160m \
+                        --memory 160m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
 
             -   name: Run test application (140MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 140m \
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 140m \
+                        --memory 140m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
 
             -   name: Run test application (130MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 130m \
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 130m \
+                        --memory 130m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
 
             -   name: Run test application (120MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 120m \
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 120m \
+                        --memory 120m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
 
             -   name: Run test application (100MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 100m \
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 100m \
+                        --memory 100m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
 
             -   name: Run test application (80MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 80m \
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 80m \
+                        --memory 80m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
 
             -   name: Run test application (60MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 60m \
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 60m \
+                        --memory 60m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
