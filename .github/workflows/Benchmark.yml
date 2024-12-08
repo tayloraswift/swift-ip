@@ -1,0 +1,59 @@
+name: benchmark
+
+on:
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
+
+jobs:
+    linux:
+        runs-on: ubuntu-24.04
+        name: memory consumption
+        steps:
+            -   name: Checkout repository
+                uses: actions/checkout@v3
+
+            -   name: Build environment
+                run: |
+                    docker build -f Benchmarks/Memory/Dockerfile -t benchmark .
+
+            -   name: Build test application
+                run: |
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        benchmark \
+                        swift build -c release --product FirewallUsage
+
+            -   name: Build firewall
+                run: |
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        -e IPINFO_TOKEN=${{ secrets.IPINFO_TOKEN }} \
+                        benchmark \
+                        Scripts/Package
+
+            -   name: Run test application (300MB memory limit)
+                run: |
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 300m \
+                        --memory 300m \
+                        -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
+                        benchmark \
+                        .build/release/FirewallUsage 66.249.66.169
+
+            -   name: Run test application (200MB memory limit)
+                run: |
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 200m \
+                        --memory 200m \
+                        -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
+                        benchmark \
+                        .build/release/FirewallUsage 66.249.66.169
+
+            -   name: Run test application (160MB memory limit)
+                run: |
+                    docker run --rm -v=$PWD:/swift -w=/swift \
+                        --memory-swap 160m \
+                        --memory 160m \
+                        -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
+                        benchmark \
+                        .build/release/FirewallUsage 66.249.66.169
