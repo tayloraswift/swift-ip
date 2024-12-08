@@ -4,8 +4,6 @@ import FoundationEssentials
 import Foundation
 #endif
 
-// $ docker run --rm -it -p 8443:8443 --network=unidoc-test --memory 20m -v ~/swift:/swift -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 -w /swift/swiftinit tayloraswift/ubuntu:latest /bin/bash
-
 import ArgumentParser
 import BSON
 import Firewalls
@@ -82,6 +80,9 @@ extension Main
         try image.colorByClaimant(claims)
 
         let bson:BSON.Document = .init(encoding: image)
+
+        print("Successfully built firewall image (\(bson.bytes.count / 1_000) KB)")
+
         try Data.init(bson.bytes).write(to: URL.init(fileURLWithPath: self.output))
     }
 }

@@ -30,33 +30,34 @@ else
     fatalError("Invalid IP address")
 }
 
+//  snippet.LOAD_FIREWALL
 let data:Data = try .init(contentsOf: URL.init(fileURLWithPath: "firewall.bson"))
 let bson:BSON.Document = .init(bytes: [UInt8].init(data)[...])
 
 let firewall:IP.Firewall = .load(from: try IP.Firewall.Image.init(bson: bson))
 
-guard
-let country:ISO.Country = firewall.country[v6: ip]
-else
+//  snippet.LOOKUP_COUNTRY
+let country:ISO.Country? = firewall.country[v6: ip]
+//  snippet.end
+if  let country:ISO.Country
 {
-    fatalError("No Country found for \(ip)")
+    print("Country: \(country)")
 }
 
-print("""
-    Address: \(ip)
-    Country: \(country)
-    """)
-
-let (system, _):(IP.AS?, IP.Claimant?) = firewall.lookup(v6: ip)
-
-guard
-let system:IP.AS
-else
+//  snippet.LOOKUP_ASN
+let (system, claimant):(IP.AS?, IP.Claimant?) = firewall.lookup(v6: ip)
+//  snippet.end
+if  let system:IP.AS
 {
-    fatalError("No ASN found for \(ip)")
+    print("""
+        ASN: \(system.number)
+        AS: \(system.domain) (\(system.name))
+        """)
 }
 
-print("""
-    ASN: \(system.number)
-    AS: \(system.domain) (\(system.name))
-    """)
+if  let claimant:IP.Claimant
+{
+    print("""
+        Claimant: \(claimant)
+        """)
+}
