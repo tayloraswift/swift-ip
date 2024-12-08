@@ -9,7 +9,7 @@ on:
 jobs:
     linux:
         runs-on: ubuntu-24.04
-        name: Ubuntu 24.04
+        name: Benchmark memory consumption
         steps:
             -   name: Checkout repository
                 uses: actions/checkout@v3
@@ -27,6 +27,7 @@ jobs:
             -   name: Build firewall
                 run: |
                     docker run --rm -v=$PWD:/swift -w=/swift \
+                        -e IPINFO_TOKEN=${{ secrets.IPINFO_TOKEN }} \
                         benchmark \
                         Scripts/Package
 
