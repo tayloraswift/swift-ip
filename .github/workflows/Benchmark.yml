@@ -9,7 +9,7 @@ on:
 jobs:
     linux:
         runs-on: ubuntu-24.04
-        name: Benchmark memory consumption
+        name: memory consumption
         steps:
             -   name: Checkout repository
                 uses: actions/checkout@v3
@@ -31,30 +31,30 @@ jobs:
                         benchmark \
                         Scripts/Package
 
+            -   name: Run test application (300MB memory limit)
+                run: |
+                    docker run --rm -v=$PWD:/swift -w=/swift --memory 300m \
+                        -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
+                        benchmark \
+                        .build/release/FirewallUsage 66.249.66.169
+
             -   name: Run test application (200MB memory limit)
                 run: |
                     docker run --rm -v=$PWD:/swift -w=/swift --memory 200m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
-                        .build/release/FirewallUsage
+                        .build/release/FirewallUsage 66.249.66.169
 
-            -   name: Run test application (150MB memory limit)
+            -   name: Run test application (160MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 150m \
+                    docker run --rm -v=$PWD:/swift -w=/swift --memory 160m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
-                        .build/release/FirewallUsage
+                        .build/release/FirewallUsage 66.249.66.169
 
-            -   name: Run test application (100MB memory limit)
+            -   name: Run test application (140MB memory limit)
                 run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 100m \
+                    docker run --rm -v=$PWD:/swift -w=/swift --memory 140m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
-                        .build/release/FirewallUsage
-
-            -   name: Run test application (80MB memory limit)
-                run: |
-                    docker run --rm -v=$PWD:/swift -w=/swift --memory 80m \
-                        -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
-                        benchmark \
-                        .build/release/FirewallUsage
+                        .build/release/FirewallUsage 66.249.66.169
