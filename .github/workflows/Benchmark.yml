@@ -58,3 +58,17 @@ jobs:
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
+
+            -   name: Run test application (130MB memory limit)
+                run: |
+                    docker run --rm -v=$PWD:/swift -w=/swift --memory 130m \
+                        -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
+                        benchmark \
+                        .build/release/FirewallUsage 66.249.66.169
+
+            -   name: Run test application (120MB memory limit)
+                run: |
+                    docker run --rm -v=$PWD:/swift -w=/swift --memory 120m \
+                        -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
+                        benchmark \
+                        .build/release/FirewallUsage 66.249.66.169
