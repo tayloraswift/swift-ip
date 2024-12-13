@@ -3,7 +3,7 @@ name: deploy
 on:
     # Enable manual deployment
     workflow_dispatch:
-    # This runs on the 37th minute of every hour, which is a random number we choose to 
+    # This runs on the 37th minute of every hour, which is a random number we choose to
     # avoid peak minutes around :00 and :30
     schedule:
         - cron: "37 * * * *"
@@ -23,8 +23,8 @@ jobs:
             -   name: Install Swift
                 uses: tayloraswift/swift-install-action@master
                 with:
-                    swift-prefix: "swift-6.0.2-release/ubuntu2404/swift-6.0.2-RELEASE"
-                    swift-id: "swift-6.0.2-RELEASE-ubuntu24.04"
+                    swift-prefix: "swift-6.0.3-release/ubuntu2404/swift-6.0.3-RELEASE"
+                    swift-id: "swift-6.0.3-RELEASE-ubuntu24.04"
 
             -   name: Checkout repository
                 uses: actions/checkout@v3
