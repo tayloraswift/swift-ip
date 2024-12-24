@@ -7,9 +7,9 @@ extension IP.Table
     struct SortedArray<Bound> where Bound:Comparable, Bound:BSON.BinaryPackable
     {
         @usableFromInline
-        let ranges:BSON._BinaryArray<ClosedRange<Bound>>
+        let ranges:BSON.BinaryArray<ClosedRange<Bound>>
         @usableFromInline
-        let colors:BSON._BinaryArray<Color>
+        let colors:BSON.BinaryArray<Color>
 
         @inlinable
         init()
@@ -19,8 +19,8 @@ extension IP.Table
         }
 
         init(
-            unchecked ranges:BSON._BinaryArray<ClosedRange<Bound>>,
-            colors:BSON._BinaryArray<Color>)
+            unchecked ranges:BSON.BinaryArray<ClosedRange<Bound>>,
+            colors:BSON.BinaryArray<Color>)
         {
             self.ranges = ranges
             self.colors = colors
@@ -30,8 +30,8 @@ extension IP.Table
 extension IP.Table.SortedArray where Bound:Sendable
 {
     init(
-        checking ranges:BSON._BinaryArray<ClosedRange<Bound>>,
-        colors:BSON._BinaryArray<Color>) throws
+        checking ranges:BSON.BinaryArray<ClosedRange<Bound>>,
+        colors:BSON.BinaryArray<Color>) throws
     {
         guard ranges.count == colors.count
         else

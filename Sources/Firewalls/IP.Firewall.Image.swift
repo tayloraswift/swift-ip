@@ -38,8 +38,8 @@ extension IP.Firewall.Image
         v4:[(IP.ASN, ip:ClosedRange<IP.V4>)],
         v6:[(IP.ASN, ip:ClosedRange<IP.V6>)]) throws
     {
-        var v4Ranges:BSON._BinaryArray<ClosedRange<IP.V4>> = .init(count: v4.count)
-        var v4Colors:BSON._BinaryArray<IP.ASN> = .init(count: v4.count)
+        var v4Ranges:BSON.BinaryArray<ClosedRange<IP.V4>> = .init(count: v4.count)
+        var v4Colors:BSON.BinaryArray<IP.ASN> = .init(count: v4.count)
 
         for (i, (asn, ip)):(Int, (IP.ASN, ClosedRange<IP.V4>)) in zip(
             v4Ranges.indices,
@@ -49,8 +49,8 @@ extension IP.Firewall.Image
             v4Colors[i] = asn
         }
 
-        var v6Ranges:BSON._BinaryArray<ClosedRange<IP.V6>> = .init(count: v6.count)
-        var v6Colors:BSON._BinaryArray<IP.ASN> = .init(count: v6.count)
+        var v6Ranges:BSON.BinaryArray<ClosedRange<IP.V6>> = .init(count: v6.count)
+        var v6Colors:BSON.BinaryArray<IP.ASN> = .init(count: v6.count)
 
         for (i, (asn, ip)):(Int, (IP.ASN, ClosedRange<IP.V6>)) in zip(
             v6Ranges.indices,
@@ -70,8 +70,8 @@ extension IP.Firewall.Image
         v4:[(ISO.Country, ip:ClosedRange<IP.V4>)],
         v6:[(ISO.Country, ip:ClosedRange<IP.V6>)]) throws
     {
-        var v4Ranges:BSON._BinaryArray<ClosedRange<IP.V4>> = .init(count: v4.count)
-        var v4Colors:BSON._BinaryArray<ISO.Country> = .init(count: v4.count)
+        var v4Ranges:BSON.BinaryArray<ClosedRange<IP.V4>> = .init(count: v4.count)
+        var v4Colors:BSON.BinaryArray<ISO.Country> = .init(count: v4.count)
 
         for (i, (country, ip)):(Int, (ISO.Country, ClosedRange<IP.V4>)) in zip(
             v4Ranges.indices,
@@ -81,8 +81,8 @@ extension IP.Firewall.Image
             v4Colors[i] = country
         }
 
-        var v6Ranges:BSON._BinaryArray<ClosedRange<IP.V6>> = .init(count: v6.count)
-        var v6Colors:BSON._BinaryArray<ISO.Country> = .init(count: v6.count)
+        var v6Ranges:BSON.BinaryArray<ClosedRange<IP.V6>> = .init(count: v6.count)
+        var v6Colors:BSON.BinaryArray<ISO.Country> = .init(count: v6.count)
 
         for (i, (country, ip)):(Int, (ISO.Country, ClosedRange<IP.V6>)) in zip(
             v6Ranges.indices,
@@ -127,8 +127,8 @@ extension IP.Firewall.Image
             return Int32.init(j)
         }
 
-        var v4Ranges:BSON._BinaryArray<ClosedRange<IP.V4>> = .init(count: v4.count)
-        var v4Claims:BSON._BinaryArray<Int32> = .init(count: v4.count)
+        var v4Ranges:BSON.BinaryArray<ClosedRange<IP.V4>> = .init(count: v4.count)
+        var v4Claims:BSON.BinaryArray<Int32> = .init(count: v4.count)
 
         for (i, (claimant, ip)):(Int, (IP.Claimant, ClosedRange<IP.V4>)) in zip(
             v4Ranges.indices,
@@ -138,8 +138,8 @@ extension IP.Firewall.Image
             v4Claims[i] = index(claimant)
         }
 
-        var v6Ranges:BSON._BinaryArray<ClosedRange<IP.V6>> = .init(count: v6.count)
-        var v6Claims:BSON._BinaryArray<Int32> = .init(count: v6.count)
+        var v6Ranges:BSON.BinaryArray<ClosedRange<IP.V6>> = .init(count: v6.count)
+        var v6Claims:BSON.BinaryArray<Int32> = .init(count: v6.count)
 
         for (i, (claimant, ip)):(Int, (IP.Claimant, ClosedRange<IP.V6>)) in zip(
             v6Ranges.indices,
