@@ -19,7 +19,7 @@ struct Bisection
 
         #expect(throws: (any Error).self)
         {
-            try image.colorByCountry(v4: ranges.map { (.us, $0) }, v6: [])
+            try image.colorByCountry(v4: ranges.map { (.US, $0) }, v6: [])
         }
     }
 
@@ -33,12 +33,12 @@ struct Bisection
         var image:IP.Firewall.Image = .init(autonomousSystems: [])
         try image.colorByCountry(
             v4: [
-                (.us,  1 ... 10),
-                (.gb, 11 ... 20),
-                (.il, 22 ... 30),
+                (.US,  1 ... 10),
+                (.GB, 11 ... 20),
+                (.IL, 22 ... 30),
             ],
             v6: [
-                (.ua, 11 ... 20),
+                (.UA, 11 ... 20),
             ])
 
         let firewall:IP.Firewall = .load(from: image)
@@ -46,33 +46,33 @@ struct Bisection
         #expect(firewall.country[v6: 0] == nil)
         #expect(firewall.country[v6: 1] == nil)
         #expect(firewall.country[v6: 10] == nil)
-        #expect(firewall.country[v6: 11] == .ua)
-        #expect(firewall.country[v6: 19] == .ua)
-        #expect(firewall.country[v6: 20] == .ua)
+        #expect(firewall.country[v6: 11] == .UA)
+        #expect(firewall.country[v6: 19] == .UA)
+        #expect(firewall.country[v6: 20] == .UA)
         #expect(firewall.country[v6: 21] == nil)
 
         #expect(firewall.country[v4: 0] == nil)
-        #expect(firewall.country[v4: 1] == .us)
-        #expect(firewall.country[v4: 9] == .us)
-        #expect(firewall.country[v4: 10] == .us)
-        #expect(firewall.country[v4: 11] == .gb)
-        #expect(firewall.country[v4: 19] == .gb)
-        #expect(firewall.country[v4: 20] == .gb)
+        #expect(firewall.country[v4: 1] == .US)
+        #expect(firewall.country[v4: 9] == .US)
+        #expect(firewall.country[v4: 10] == .US)
+        #expect(firewall.country[v4: 11] == .GB)
+        #expect(firewall.country[v4: 19] == .GB)
+        #expect(firewall.country[v4: 20] == .GB)
         #expect(firewall.country[v4: 21] == nil)
-        #expect(firewall.country[v4: 22] == .il)
-        #expect(firewall.country[v4: 30] == .il)
+        #expect(firewall.country[v4: 22] == .IL)
+        #expect(firewall.country[v4: 30] == .IL)
         #expect(firewall.country[v4: 31] == nil)
 
         #expect(firewall.country[v6: .init(v4: 0)] == nil)
-        #expect(firewall.country[v6: .init(v4: 1)] == .us)
-        #expect(firewall.country[v6: .init(v4: 9)] == .us)
-        #expect(firewall.country[v6: .init(v4: 10)] == .us)
-        #expect(firewall.country[v6: .init(v4: 11)] == .gb)
-        #expect(firewall.country[v6: .init(v4: 19)] == .gb)
-        #expect(firewall.country[v6: .init(v4: 20)] == .gb)
+        #expect(firewall.country[v6: .init(v4: 1)] == .US)
+        #expect(firewall.country[v6: .init(v4: 9)] == .US)
+        #expect(firewall.country[v6: .init(v4: 10)] == .US)
+        #expect(firewall.country[v6: .init(v4: 11)] == .GB)
+        #expect(firewall.country[v6: .init(v4: 19)] == .GB)
+        #expect(firewall.country[v6: .init(v4: 20)] == .GB)
         #expect(firewall.country[v6: .init(v4: 21)] == nil)
-        #expect(firewall.country[v6: .init(v4: 22)] == .il)
-        #expect(firewall.country[v6: .init(v4: 30)] == .il)
+        #expect(firewall.country[v6: .init(v4: 22)] == .IL)
+        #expect(firewall.country[v6: .init(v4: 30)] == .IL)
         #expect(firewall.country[v6: .init(v4: 31)] == nil)
     }
 
@@ -88,7 +88,7 @@ struct Bisection
         ]
 
         var image:IP.Firewall.Image = .init(autonomousSystems: [])
-        try image.colorByCountry(v4: [], v6: blocks.map { (.us, $0.range) })
+        try image.colorByCountry(v4: [], v6: blocks.map { (.US, $0.range) })
 
         let firewall:IP.Firewall = .load(from: image)
 
