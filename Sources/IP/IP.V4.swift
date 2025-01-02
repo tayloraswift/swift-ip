@@ -31,7 +31,8 @@ extension IP.V4
 extension IP.V4
 {
     /// Returns the most common loopback address, `127.0.0.1`. Most people reaching for this
-    /// API actually want ``IP.Block.loopback [5JXTL]``, which models the entire loopback range.
+    /// API actually want ``IP.Block.loopback -> IP.Block<IP.V6>``, which models the entire
+    /// loopback range.
     @inlinable public
     static var localhost:Self { .init(value: 0x7F_00_00_01) }
 }
