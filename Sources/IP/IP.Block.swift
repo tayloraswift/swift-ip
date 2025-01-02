@@ -36,13 +36,13 @@ extension IP.Block<IP.V6>
 
     /// Returns the IPv6 loopback mask, `::1/128`.
     @inlinable public
-    static var loopback:Self { .init(base: .localhost, bits: 128) }
+    static var loopback:IP.Block<IP.V6> { .init(base: .localhost, bits: 128) }
 }
 extension IP.Block<IP.V4>
 {
     /// Returns the IPv4 loopback mask, `127.0.0.0/8`.
     @inlinable public
-    static var loopback:Self { .init(base: .localhost, bits: 8) }
+    static var loopback:IP.Block<IP.V4> { .init(base: .localhost, bits: 8) }
 }
 extension IP.Block
 {
