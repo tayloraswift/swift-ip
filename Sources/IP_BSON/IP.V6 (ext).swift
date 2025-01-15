@@ -26,7 +26,7 @@ extension IP.V6:BSONBinaryDecodable
         }
         else
         {
-            throw BSON.ShapeError.init(invalid: bson.bytes.count, expected: .length(16))
+            throw BSON.BinaryShapeError.init(invalid: bson.bytes.count, expected: .size(16))
         }
     }
 }
