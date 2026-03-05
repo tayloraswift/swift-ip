@@ -1,6 +1,5 @@
 import IP
 import JSON
 
-extension IP.Block:JSONStringDecodable
-{
+extension IP.Block: JSONStringDecodable {
 }

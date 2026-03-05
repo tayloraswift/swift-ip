@@ -1,33 +1,32 @@
 import IP
 import JSON
 
-@frozen public
-struct GitHubWhitelist
-{
-    var hooks:[IP.AnyCIDR]
-    var web:[IP.AnyCIDR]
-    var api:[IP.AnyCIDR]
-    var git:[IP.AnyCIDR]
-    var importer:[IP.AnyCIDR]
-    var importerGitHubEnterprise:[IP.AnyCIDR]
-    var packages:[IP.AnyCIDR]
-    var pages:[IP.AnyCIDR]
-    var actions:[IP.AnyCIDR]
-    var actionsMacOS:[IP.AnyCIDR]
-    var dependabot:[IP.AnyCIDR]
+@frozen public struct GitHubWhitelist {
+    var hooks: [IP.AnyCIDR]
+    var web: [IP.AnyCIDR]
+    var api: [IP.AnyCIDR]
+    var git: [IP.AnyCIDR]
+    var importer: [IP.AnyCIDR]
+    var importerGitHubEnterprise: [IP.AnyCIDR]
+    var packages: [IP.AnyCIDR]
+    var pages: [IP.AnyCIDR]
+    var actions: [IP.AnyCIDR]
+    var actionsMacOS: [IP.AnyCIDR]
+    var dependabot: [IP.AnyCIDR]
 
-    init(hooks:[IP.AnyCIDR],
-        web:[IP.AnyCIDR],
-        api:[IP.AnyCIDR],
-        git:[IP.AnyCIDR],
-        importer:[IP.AnyCIDR],
-        importerGitHubEnterprise:[IP.AnyCIDR],
-        packages:[IP.AnyCIDR],
-        pages:[IP.AnyCIDR],
-        actions:[IP.AnyCIDR],
-        actionsMacOS:[IP.AnyCIDR],
-        dependabot:[IP.AnyCIDR])
-    {
+    init(
+        hooks: [IP.AnyCIDR],
+        web: [IP.AnyCIDR],
+        api: [IP.AnyCIDR],
+        git: [IP.AnyCIDR],
+        importer: [IP.AnyCIDR],
+        importerGitHubEnterprise: [IP.AnyCIDR],
+        packages: [IP.AnyCIDR],
+        pages: [IP.AnyCIDR],
+        actions: [IP.AnyCIDR],
+        actionsMacOS: [IP.AnyCIDR],
+        dependabot: [IP.AnyCIDR]
+    ) {
         self.hooks = hooks
         self.web = web
         self.api = api
@@ -41,13 +40,10 @@ struct GitHubWhitelist
         self.dependabot = dependabot
     }
 }
-extension GitHubWhitelist
-{
-    public
-    func add(to claims:inout [IP.Claims])
-    {
+extension GitHubWhitelist {
+    public func add(to claims: inout [IP.Claims]) {
         // var actions:IP.Claims = .init(id: .github_actions)
-        var webhook:IP.Claims = .init(id: .github_webhook)
+        var webhook: IP.Claims = .init(id: .github_webhook)
         // var other:IP.Claims = .init(id: .github_other)
 
         // GitHub seems to use subsets of the GitHub Actions address space for its other
@@ -75,11 +71,8 @@ extension GitHubWhitelist
         // claims.append(other)
     }
 }
-extension GitHubWhitelist
-{
-    @frozen public
-    enum CodingKey:String, Sendable
-    {
+extension GitHubWhitelist {
+    @frozen public enum CodingKey: String, Sendable {
         case hooks
         case web
         case api
@@ -93,12 +86,10 @@ extension GitHubWhitelist
         case dependabot
     }
 }
-extension GitHubWhitelist:JSONObjectDecodable
-{
-    public
-    init(json:JSON.ObjectDecoder<CodingKey>) throws
-    {
-        self.init(hooks: try json[.hooks]?.decode() ?? [],
+extension GitHubWhitelist: JSONObjectDecodable {
+    public init(json: JSON.ObjectDecoder<CodingKey>) throws {
+        self.init(
+            hooks: try json[.hooks]?.decode() ?? [],
             web: try json[.web]?.decode() ?? [],
             api: try json[.api]?.decode() ?? [],
             git: try json[.git]?.decode() ?? [],
@@ -108,6 +99,7 @@ extension GitHubWhitelist:JSONObjectDecodable
             pages: try json[.pages]?.decode() ?? [],
             actions: try json[.actions]?.decode() ?? [],
             actionsMacOS: try json[.actions_macos]?.decode() ?? [],
-            dependabot: try json[.dependabot]?.decode() ?? [])
+            dependabot: try json[.dependabot]?.decode() ?? []
+        )
     }
 }
