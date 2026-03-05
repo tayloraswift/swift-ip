@@ -1,11 +1,8 @@
 import BSON
 import IP
 
-extension IP
-{
-    @frozen public
-    enum Claimant:String, BSONEncodable, BSONDecodable, Sendable
-    {
+extension IP {
+    @frozen public enum Claimant: String, BSONEncodable, BSONDecodable, Sendable {
         case github_actions
         case github_webhook
         case github_other

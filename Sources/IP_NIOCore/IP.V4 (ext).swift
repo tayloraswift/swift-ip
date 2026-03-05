@@ -7,12 +7,9 @@ import CNIOLinux
 import IP
 import NIOCore
 
-extension IP.V4
-{
+extension IP.V4 {
     /// Creates an IPv4 address from an ``SocketAddress/IPv4Address``.
-    @inlinable public
-    init(_ ip:SocketAddress.IPv4Address)
-    {
+    @inlinable public init(_ ip: SocketAddress.IPv4Address) {
         self.init(storage: ip.address.sin_addr.s_addr)
     }
 }
