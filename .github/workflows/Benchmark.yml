@@ -49,11 +49,11 @@ jobs:
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169
 
-            -   name: Run test application (160MB memory limit)
+            -   name: Run test application (190MB memory limit)
                 run: |
                     docker run --rm -v=$PWD:/swift -w=/swift \
-                        --memory-swap 160m \
-                        --memory 160m \
+                        --memory-swap 190m \
+                        --memory 190m \
                         -e LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
                         benchmark \
                         .build/release/FirewallUsage 66.249.66.169

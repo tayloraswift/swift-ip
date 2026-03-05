@@ -3,34 +3,29 @@ import IP
 import ISO
 import Testing
 
-@Suite
-struct Bisection
-{
-    @Test(arguments: [
-        [10 ... 19, 0 ... 9],
-        [0 ... 10, 10 ... 10],
-        [0 ... 10, 5 ... 10],
-        [0 ... 10, 0 ... 10],
-        [5 ... 15, 0 ... 10],
-    ])
-    static func validation(_ ranges:[ClosedRange<IP.V4>]) throws
-    {
-        var image:IP.Firewall.Image = .init(autonomousSystems: [])
+@Suite struct Bisection {
+    @Test(
+        arguments: [
+            [10 ... 19, 0 ... 9],
+            [0 ... 10, 10 ... 10],
+            [0 ... 10, 5 ... 10],
+            [0 ... 10, 0 ... 10],
+            [5 ... 15, 0 ... 10],
+        ]
+    ) static func validation(_ ranges: [ClosedRange<IP.V4>]) throws {
+        var image: IP.Firewall.Image = .init(autonomousSystems: [])
 
-        #expect(throws: (any Error).self)
-        {
+        #expect(throws: (any Error).self) {
             try image.colorByCountry(v4: ranges.map { (.US, $0) }, v6: [])
         }
     }
 
-    @Test
-    static func bisection() throws
-    {
-        let empty:IP.Firewall = .load(from: .init(autonomousSystems: []))
+    @Test static func bisection() throws {
+        let empty: IP.Firewall = .load(from: .init(autonomousSystems: []))
 
         #expect(empty.lookup(v6: 0) == (nil, nil))
 
-        var image:IP.Firewall.Image = .init(autonomousSystems: [])
+        var image: IP.Firewall.Image = .init(autonomousSystems: [])
         try image.colorByCountry(
             v4: [
                 (.US,  1 ... 10),
@@ -39,9 +34,10 @@ struct Bisection
             ],
             v6: [
                 (.UA, 11 ... 20),
-            ])
+            ]
+        )
 
-        let firewall:IP.Firewall = .load(from: image)
+        let firewall: IP.Firewall = .load(from: image)
 
         #expect(firewall.country[v6: 0] == nil)
         #expect(firewall.country[v6: 1] == nil)
@@ -76,10 +72,8 @@ struct Bisection
         #expect(firewall.country[v6: .init(v4: 31)] == nil)
     }
 
-    @Test
-    static func cidr() throws
-    {
-        let blocks:[IP.Block<IP.V6>] = [
+    @Test static func cidr() throws {
+        let blocks: [IP.Block<IP.V6>] = [
             0xAAAA_AAAA_AAAA_AAAA_0000_0000_0000_0000 / 64,
             0xBBBB_BBBB_BBBB_BBBB_B000_0000_0000_0000 / 68,
             0xCCCC_CCCC_CCCC_CCCC_CC00_0000_0000_0000 / 72,
@@ -87,10 +81,10 @@ struct Bisection
             0xEEEE_EEEE_EEEE_EEEE_EEEE_0000_0000_0000 / 80,
         ]
 
-        var image:IP.Firewall.Image = .init(autonomousSystems: [])
+        var image: IP.Firewall.Image = .init(autonomousSystems: [])
         try image.colorByCountry(v4: [], v6: blocks.map { (.US, $0.range) })
 
-        let firewall:IP.Firewall = .load(from: image)
+        let firewall: IP.Firewall = .load(from: image)
 
         #expect(firewall.country[v6: 0xAAAA_AAAA_AAAA_AAA9_FFFF_FFFF_FFFF_FFFF] == nil)
         #expect(firewall.country[v6: 0xAAAA_AAAA_AAAA_AAAA_0000_0000_0000_0000] != nil)
