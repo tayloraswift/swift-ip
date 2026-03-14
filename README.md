@@ -2,9 +2,9 @@
 
 ***`ip`***
 
-[![Tests](https://github.com/tayloraswift/swift-ip/actions/workflows/Tests.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/Tests.yml)
-[![Update](https://github.com/tayloraswift/swift-ip/actions/workflows/Update.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/Update.yml)
-[![Documentation](https://github.com/tayloraswift/swift-ip/actions/workflows/Documentation.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/Documentation.yml)
+[![Tests](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml)
+[![Update](https://github.com/rarestype/swift-ip/actions/workflows/Update.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Update.yml)
+[![Documentation](https://github.com/rarestype/swift-ip/actions/workflows/Documentation.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Documentation.yml)
 
 </div>
 
@@ -27,12 +27,12 @@ The swift-ip library requires Swift 6.0 or later. This is because [`IP.V6`](http
 
 | Platform | Status |
 | -------- | ------ |
-| 🐧 Linux | [![Tests](https://github.com/tayloraswift/swift-ip/actions/workflows/Tests.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/Tests.yml) |
-| 🍏 Darwin | [![Tests](https://github.com/tayloraswift/swift-ip/actions/workflows/Tests.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/Tests.yml) |
-| 🍏 Darwin (iOS) | [![iOS](https://github.com/tayloraswift/swift-ip/actions/workflows/iOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/iOS.yml) |
-| 🍏 Darwin (tvOS) | [![tvOS](https://github.com/tayloraswift/swift-ip/actions/workflows/tvOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/tvOS.yml) |
-| 🍏 Darwin (visionOS) | [![visionOS](https://github.com/tayloraswift/swift-ip/actions/workflows/visionOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/visionOS.yml) |
-| 🍏 Darwin (watchOS) | [![watchOS](https://github.com/tayloraswift/swift-ip/actions/workflows/watchOS.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/watchOS.yml) |
+| 🐧 Linux | [![Tests](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml) |
+| 🍏 Darwin | [![Tests](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml) |
+| 🍏 Darwin (iOS) | [![iOS](https://github.com/rarestype/swift-ip/actions/workflows/iOS.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/iOS.yml) |
+| 🍏 Darwin (tvOS) | [![tvOS](https://github.com/rarestype/swift-ip/actions/workflows/tvOS.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/tvOS.yml) |
+| 🍏 Darwin (visionOS) | [![visionOS](https://github.com/rarestype/swift-ip/actions/workflows/visionOS.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/visionOS.yml) |
+| 🍏 Darwin (watchOS) | [![watchOS](https://github.com/rarestype/swift-ip/actions/workflows/watchOS.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/watchOS.yml) |
 
 
 [Check deployment minimums](https://swiftinit.org/docs/swift-ip#ss:platform-requirements)
