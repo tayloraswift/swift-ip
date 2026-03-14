@@ -27,8 +27,8 @@ jobs:
                 env:
                     MIRROR: "https://download.rarestype.com/swift-ip/master"
                 run: |
-                    curl -L "${MIRROR}/Linux-$(uname -m)/prefabricator.gz" -o prefabricator.gz
-                    gzip -d prefabricator.gz
+                    curl -L "${MIRROR}/Linux-$(uname -m)/prefabricator.gz" -o prefabricator
+                    chmod +x prefabricator
 
             -   name: 💖 Build blocklist image 💖
                 env:
