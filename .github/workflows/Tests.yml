@@ -81,7 +81,7 @@ jobs:
         if: ${{ needs.changes.outputs.code_changed == 'true' && github.event_name != 'pull_request' }}
         steps:
             -   name: 💖 Setup AWS CLI 💖
-                uses: aws-actions/configure-aws-credentials@v1
+                uses: aws-actions/configure-aws-credentials@v6
                 with:
                     aws-secret-access-key: ${{ secrets.AWS_S3_ACCESS_SECRET }}
                     aws-access-key-id: ${{ vars.AWS_S3_ACCESS_KEY }}
