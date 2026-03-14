@@ -13,29 +13,29 @@ jobs:
         runs-on: ubuntu-24.04
         name: Ubuntu 24.04
         steps:
-            -   name: 💖 Setup AWS CLI 💖
+            -   name: 💝 Setup AWS CLI 💝
                 uses: aws-actions/configure-aws-credentials@v1
                 with:
                     aws-secret-access-key: ${{ secrets.AWS_S3_ACCESS_SECRET }}
                     aws-access-key-id: ${{ vars.AWS_S3_ACCESS_KEY }}
                     aws-region: us-east-1
 
-            -   name: 💖 Checkout repository 💖
+            -   name: 💝 Checkout repository 💝
                 uses: actions/checkout@v6
 
-            -   name: 💖 Download prefabricator 💖
+            -   name: 💝 Download prefabricator 💝
                 env:
                     MIRROR: "https://download.rarestype.com/swift-ip/master"
                 run: |
                     curl -L "${MIRROR}/Linux-$(uname -m)/prefabricator.gz" -o prefabricator
                     chmod +x prefabricator
 
-            -   name: 💖 Build blocklist image 💖
+            -   name: 💝 Build blocklist image 💝
                 env:
                     IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
                 run: Scripts/Update prefabricator
 
-            -   name: 💖 Upload blocklist image 💖
+            -   name: 💝 Upload blocklist image 💝
                 run: |
                     aws s3 cp firewall.bson.gz s3://swiftinit/ip/firewall.bson.gz \
                         --content-encoding gzip \

@@ -17,7 +17,7 @@ let package: Package = .init(
     ],
     dependencies: [
         .package(url: "https://github.com/tayloraswift/swift-bson", from: "1.0.0"),
-        .package(url: "https://github.com/tayloraswift/swift-json", from: "2.3.0"),
+        .package(url: "https://github.com/tayloraswift/swift-json", from: "2.3.1"),
 
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.75.0"),
