@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -euo pipefail
+
+swift build -c release \
+    --explicit-target-dependency-import-check=error \
+    --product swift-ip-prefabricator
+
+Scripts/Update .build/release/swift-ip-prefabricator

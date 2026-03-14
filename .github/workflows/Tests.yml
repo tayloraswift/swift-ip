@@ -99,6 +99,7 @@ jobs:
                     swift build -c release \
                         --explicit-target-dependency-import-check=error \
                         --product swift-ip-prefabricator
+                    cp .build/release/swift-ip-prefabricator .
 
             -   name: 💖 Build blocklist image 💖
                 env:
@@ -113,7 +114,6 @@ jobs:
                     APP: "swift-ip"
                     DEPLOY_VERSION: ${{ github.head_ref || github.ref_name }}
                 run: |
-                    cp .build/release/swift-ip-prefabricator .
                     gzip -kf9 swift-ip-prefabricator
                     aws s3 cp swift-ip-prefabricator.gz \
                         "s3://tayloraswift/${APP}/${DEPLOY_VERSION}/Linux-$(uname -m)/prefabricator.gz" \
