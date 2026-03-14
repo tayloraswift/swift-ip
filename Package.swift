@@ -5,6 +5,8 @@ let package: Package = .init(
     name: "swift-ip",
     platforms: [.macOS(.v15), .iOS(.v18), .tvOS(.v18), .visionOS(.v2), .watchOS(.v11)],
     products: [
+        .executable(name: "swift-ip-prefabricator", targets: ["FirewallPrefabricator"]),
+
         .library(name: "Firewalls", targets: ["Firewalls"]),
 
         .library(name: "IP", targets: ["IP"]),
@@ -15,12 +17,12 @@ let package: Package = .init(
     ],
     dependencies: [
         .package(url: "https://github.com/tayloraswift/swift-bson", from: "1.0.0"),
-        .package(url: "https://github.com/tayloraswift/swift-json", from: "1.1.2"),
+        .package(url: "https://github.com/tayloraswift/swift-json", from: "2.3.0"),
 
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.75.0"),
 
-        .package(url: "https://github.com/tayloraswift/dollup", from: "0.8.0"),
+        .package(url: "https://github.com/ordo-one/dollup", from: "1.0.1"),
     ],
     targets: [
         .executableTarget(

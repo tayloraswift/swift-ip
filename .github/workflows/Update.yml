@@ -1,4 +1,4 @@
-name: deploy
+name: update
 
 on:
     # Enable manual deployment
@@ -13,31 +13,29 @@ jobs:
         runs-on: ubuntu-24.04
         name: Ubuntu 24.04
         steps:
-            -   name: Setup AWS CLI
+            -   name: 💖 Setup AWS CLI 💖
                 uses: aws-actions/configure-aws-credentials@v1
                 with:
                     aws-secret-access-key: ${{ secrets.AWS_S3_ACCESS_SECRET }}
                     aws-access-key-id: ${{ vars.AWS_S3_ACCESS_KEY }}
                     aws-region: us-east-1
 
-            -   name: Install Swift
-                uses: tayloraswift/swift-install-action@master
-                with:
-                    swift-prefix: "swift-6.2.4-release/ubuntu2404/swift-6.2.4-RELEASE"
-                    swift-id: "swift-6.2.4-RELEASE-ubuntu24.04"
-
-            -   name: Checkout repository
+            -   name: 💖 Checkout repository 💖
                 uses: actions/checkout@v3
 
-            -   name: Build products
+            -   name: 💖 Download prefabricator 💖
+                env:
+                    MIRROR: "https://download.rarestype.com/swift-ip/master"
+                run: |
+                    curl -L "${MIRROR}/Linux-$(uname -m)/prefabricator.gz"
+                    gzip -d prefabricator.gz
+
+            -   name: 💖 Build blocklist image 💖
                 env:
                     IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
-                run: Scripts/Package
+                run: Scripts/Update prefabricator
 
-            -   name: Test firewall
-                run: swift run -c release FirewallUsage 98.223.208.128
-
-            -   name: Upload firewall
+            -   name: 💖 Upload blocklist image 💖
                 run: |
                     aws s3 cp firewall.bson.gz s3://swiftinit/ip/firewall.bson.gz \
                         --content-encoding gzip \

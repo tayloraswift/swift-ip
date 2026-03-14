@@ -3,7 +3,7 @@
 ***`ip`***
 
 [![Tests](https://github.com/tayloraswift/swift-ip/actions/workflows/Tests.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/Tests.yml)
-[![Deploy](https://github.com/tayloraswift/swift-ip/actions/workflows/Deploy.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/Deploy.yml)
+[![Update](https://github.com/tayloraswift/swift-ip/actions/workflows/Update.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/Update.yml)
 [![Documentation](https://github.com/tayloraswift/swift-ip/actions/workflows/Documentation.yml/badge.svg)](https://github.com/tayloraswift/swift-ip/actions/workflows/Documentation.yml)
 
 </div>

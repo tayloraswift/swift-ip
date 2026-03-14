@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# If JSON files are not present, download them from ipinfo.io
+for file in asn country ; do
+    if [ ! -f $file.json ]; then
+        if [ -z "$IPINFO_TOKEN" ]; then
+            echo "error: IPINFO_TOKEN is not set"
+            exit 1
+        fi
+
+        # Must follow redirects to get the actual file
+        curl -L https://ipinfo.io/data/free/$file.json.gz?token=$IPINFO_TOKEN -o $file.json.gz
+        gzip -d $file.json.gz
+    else
+        echo "Using existing $file.json"
+    fi
+done
+
+if [ ! -f googlebot.json ]; then
+    curl -L https://developers.google.com/static/search/apis/ipranges/googlebot.json \
+        -o googlebot.json
+else
+    echo "Using existing googlebot.json"
+fi
+
+if [ ! -f bingbot.json ]; then
+    curl -L https://www.bing.com/toolbox/bingbot.json \
+        -o bingbot.json
+else
+    echo "Using existing bingbot.json"
+fi
+
+if [ ! -f github.json ]; then
+    curl -L https://api.github.com/meta \
+        -o github.json
+else
+    echo "Using existing github.json"
+fi
+
+
+"$(realpath $1)" \
+    --country country.json \
+    --asn asn.json \
+    --googlebot googlebot.json \
+    --bingbot bingbot.json \
+    --github github.json \
+    --output firewall.bson
+
+gzip -kf9 firewall.bson
