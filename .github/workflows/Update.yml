@@ -26,6 +26,7 @@ jobs:
             -   name: 💝 Download prefabricator 💝
                 env:
                     MIRROR: "https://download.rarestype.com/swift-ip"
+                    GH_TOKEN: ${{ github.token }}
                 run: |
                     LATEST=$(
                         gh api "repos/${GITHUB_REPOSITORY}/tags" --paginate --jq '.[].name' \
