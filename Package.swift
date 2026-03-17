@@ -16,8 +16,8 @@ let package: Package = .init(
         .library(name: "IPinfo", targets: ["IPinfo"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/tayloraswift/swift-bson", from: "1.0.0"),
-        .package(url: "https://github.com/tayloraswift/swift-json", from: "2.3.1"),
+        .package(url: "https://github.com/rarestype/swift-bson", from: "1.0.0"),
+        .package(url: "https://github.com/rarestype/swift-json", from: "2.3.1"),
 
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0"),
         .package(url: "https://github.com/apple/swift-nio", from: "2.75.0"),
