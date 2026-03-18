@@ -3,6 +3,9 @@ set -e
 
 swift --version
 
+swift package dollup --allow-writing-to-package-directory
+git diff --exit-code
+
 swift build -c release \
     --explicit-target-dependency-import-check=error \
     --build-tests
