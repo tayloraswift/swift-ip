@@ -1,4 +1,4 @@
-name: benchmark
+name: Benchmark
 
 on:
     push:
