@@ -1,20 +1,10 @@
 <div align="center">
 
-***`ip`***
+📍 &nbsp; **swift-ip** &nbsp; 📍
 
-[![Tests](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml)
-[![Update](https://github.com/rarestype/swift-ip/actions/workflows/Update.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Update.yml)
-[![Documentation](https://github.com/rarestype/swift-ip/actions/workflows/Documentation.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Documentation.yml)
+exchange strongly-typed values with zero overhead without falling back to raw integer representations or linking against large frameworks!
 
-</div>
-
-The ***swift-ip*** library is a portable, Foundation-free library for working with IP addresses. It provides tools for parsing and formatting IP addresses, data structures for performing efficient IP address lookups, and shims for compatibility with types from other libraries such as SwiftNIO.
-
-One of the goals of this library is to allow other libraries to exchange strongly-typed values with zero overhead without falling back to raw integer representations or linking against large frameworks.
-
-<div align="center">
-
-[documentation](https://swiftinit.org/docs/swift-ip/ip) ·
+[documentation](https://swiftinit.org/docs/swift-ip) ·
 [license](LICENSE)
 
 </div>
@@ -22,11 +12,15 @@ One of the goals of this library is to allow other libraries to exchange strongl
 
 ## Requirements
 
+The swift-ip library is a portable, Foundation-free library for working with IP addresses. It provides tools for parsing and formatting IP addresses, data structures for performing efficient IP address lookups, and shims for compatibility with types from other libraries such as SwiftNIO.
+
 The swift-ip library requires Swift 6.0 or later. This is because [`IP.V6`](https://swiftinit.org/docs/swift-ip/ip/ip/v6) uses [`UInt128`](https://swiftinit.org/docs/swift/swift/uint128).
 
 
 | Platform | Status |
 | -------- | ------ |
+| 💬 Documentation | [![Documentation](https://github.com/rarestype/swift-ip/actions/workflows/Documentation.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Documentation.yml) |
+| 🗝 Update | [![Update](https://github.com/rarestype/swift-ip/actions/workflows/Update.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Update.yml) |
 | 🐧 Linux | [![Tests](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml) |
 | 🍏 Darwin | [![Tests](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml) |
 | 🍏 Darwin (iOS) | [![iOS](https://github.com/rarestype/swift-ip/actions/workflows/iOS.yml/badge.svg)](https://github.com/rarestype/swift-ip/actions/workflows/iOS.yml) |
@@ -47,7 +41,7 @@ The swift-nio library provides a multi-platform [`SocketAddress`](https://swifti
 
 ## Who is using swift-ip?
 
-The [Swiftinit](https://swiftinit.org) documentation index currently uses the swift-ip library to verify clients (such as Googlebot and GitHub Webhooks) and combat abuse.
+The [Swiftinit](https://swiftinit.org) documentation index currently uses the swift-ip library to verify clients such as Googlebot and GitHub Webhooks.
 
 
 ## License
