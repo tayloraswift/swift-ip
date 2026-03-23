@@ -1,5 +1,7 @@
 name: Update
 
+permissions:
+    contents: write
 on:
     # Enable manual deployment
     workflow_dispatch:
@@ -9,7 +11,7 @@ on:
         - cron: "37 * * * *"
 
 jobs:
-    linux:
+    Firewall:
         runs-on: ubuntu-24.04
         name: Ubuntu 24.04
         steps:
@@ -48,3 +50,9 @@ jobs:
                     aws s3 cp firewall.bson.gz s3://swiftinit/ip/firewall.bson.gz \
                         --content-encoding gzip \
                         --content-type application/bson
+
+            -   name: 💝 Update badge 💝
+                uses: rarestype/rarestbadge@v1
+                if: always()
+                with:
+                    title: Update
