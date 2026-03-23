@@ -19,7 +19,7 @@ on:
             -   '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-    linux-deploy:
+    Linux-deploy:
         runs-on: ubuntu-24.04
         name: Ubuntu 24.04 (deploy)
         steps:
