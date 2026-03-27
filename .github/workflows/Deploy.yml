@@ -39,7 +39,7 @@ jobs:
                 uses: actions/checkout@v6
 
             -   name: 💝 Install Swift 💝
-                uses: ./.github/actions/InstallSwift
+                uses: ./.github/actions/install-swift
 
             -   name: 💝 Build prefabricator 💝
                 run: |
