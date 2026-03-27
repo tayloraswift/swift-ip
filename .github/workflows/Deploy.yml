@@ -67,5 +67,5 @@ jobs:
                 uses: rarestype/rarestbadge@v1
                 if: always()
                 with:
-                    badge: Release/${{ github.job }}-${{ matrix.runner.arch }}
+                    badge: SemanticRelease/${{ github.job }}-${{ matrix.runner.arch }}
                     title: Release
