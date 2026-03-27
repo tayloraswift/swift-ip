@@ -1,5 +1,7 @@
 name: Deploy
 
+permissions:
+    contents: write
 on:
     workflow_dispatch:
         inputs:
@@ -13,15 +15,18 @@ on:
                 description: 'The version to deploy'
                 required: true
                 type: string
-    push:
-        branches: [ master ]
-        tags:
-            -   '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-    Linux-deploy:
-        runs-on: ubuntu-24.04
-        name: Ubuntu 24.04 (deploy)
+    Linux:
+        strategy:
+            matrix:
+                runner:
+                    -   name: "Ubuntu (aarch64)"
+                        arch: aarch64
+                        id: ubuntu-24.04-arm
+
+        runs-on: ${{ matrix.runner.id }}
+        name: ${{ matrix.runner.name }}
         steps:
             -   name: 💝 Setup AWS CLI 💝
                 uses: aws-actions/configure-aws-credentials@v6
@@ -30,14 +35,11 @@ jobs:
                     aws-access-key-id: ${{ vars.AWS_S3_ACCESS_KEY }}
                     aws-region: us-east-1
 
-            -   name: 💝 Install Swift 💝
-                uses: rarestype/swift-install-action@master
-                with:
-                    swift-prefix: "swift-6.2.4-release/ubuntu2404/swift-6.2.4-RELEASE"
-                    swift-id: "swift-6.2.4-RELEASE-ubuntu24.04"
-
             -   name: 💝 Checkout repository 💝
                 uses: actions/checkout@v6
+
+            -   name: 💝 Install Swift 💝
+                uses: ./.github/actions/install-swift
 
             -   name: 💝 Build prefabricator 💝
                 run: |
@@ -58,10 +60,12 @@ jobs:
             -   name: 💝 Deploy prefabricator 💝
                 env:
                     APP: "swift-ip"
-                    DEPLOY_VERSION: ${{ inputs.version || github.ref_name }}
-                run: |
-                    gzip -kf9 swift-ip-prefabricator
-                    aws s3 cp swift-ip-prefabricator.gz \
-                        "s3://rarestype/public/${APP}/${DEPLOY_VERSION}/Linux-$(uname -m)/prefabricator.gz" \
-                        --content-encoding gzip \
-                        --content-type application/gzip
+                    DEPLOY_VERSION: ${{ inputs.version }}
+                run: Scripts/Deploy
+
+            -   name: 💝 Update badge 💝
+                uses: rarestype/rarestbadge@v1
+                if: always()
+                with:
+                    badge: Release/${{ github.job }}-${{ matrix.runner.arch }}
+                    title: Release
