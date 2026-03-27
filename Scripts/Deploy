@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+gzip -kf9 swift-ip-prefabricator
+
+for version in "$DEPLOY_VERSION" "latest"; do
+    aws s3 cp swift-ip-prefabricator.gz \
+        "s3://rarestype/public/${APP}/${version}/Linux-$(uname -m)/prefabricator.gz" \
+        --content-encoding gzip \
+        --content-type application/gzip
+done
