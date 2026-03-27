@@ -39,7 +39,7 @@ jobs:
             -   name: 💖 Checkout repository 💖
                 uses: actions/checkout@v6
 
-            -   name: 💝 Install Swift 💝
+            -   name: 💖 Install Swift 💖
                 uses: ./.github/actions/install-swift
 
             -   name: 💖 Run tests 💖
