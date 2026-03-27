@@ -1,4 +1,6 @@
-name: "Auto Swift install"
+#  ❣❣❣  DO NOT EDIT  ❣  THIS FILE IS AUTOMATICALLY SYNCED  ❣  DO NOT EDIT  ❣❣❣
+
+name: "Configure Swift installation"
 description: "Automatically configure and install Swift based on the runner OS"
 
 runs:
@@ -44,7 +46,7 @@ runs:
                 echo "swift-id=$ID" >> $GITHUB_OUTPUT
 
         -   name: Install Swift
-            uses: rarestype/swift-install-action@master
+            uses: rarestype/swift-install-action@v1
             with:
                 swift-prefix: ${{ steps.parameters.outputs.swift-prefix }}
                 swift-id: ${{ steps.parameters.outputs.swift-id }}

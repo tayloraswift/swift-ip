@@ -20,7 +20,6 @@ The swift-ip library requires Swift 6.0 or later. This is because [`IP.V6`](http
 | Platform | Status |
 | -------- | ------|
 | 💬 Documentation | [![Status](https://raw.githubusercontent.com/rarestype/swift-ip/refs/badges/ci/Documentation/_all/status.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Documentation.yml) |
-| 💝 Release | [![Status](https://raw.githubusercontent.com/rarestype/swift-ip/refs/badges/ci/SemanticRelease/Linux-aarch64/status.svg)](https://github.com/rarestype/swift-ip/actions/workflows/SemanticRelease.yml) |
 | 🗝 Update | [![Status](https://raw.githubusercontent.com/rarestype/swift-ip/refs/badges/ci/Update/Firewall/status.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Update.yml) |
 | 🐧 Linux | [![Status](https://raw.githubusercontent.com/rarestype/swift-ip/refs/badges/ci/Tests/Linux/status.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml) |
 | 🍏 Darwin | [![Status](https://raw.githubusercontent.com/rarestype/swift-ip/refs/badges/ci/Tests/macOS/status.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml) |
@@ -28,6 +27,7 @@ The swift-ip library requires Swift 6.0 or later. This is because [`IP.V6`](http
 | 🍏 Darwin (tvOS) | [![Status](https://raw.githubusercontent.com/rarestype/swift-ip/refs/badges/ci/Tests/tvOS/status.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml) |
 | 🍏 Darwin (visionOS) | [![Status](https://raw.githubusercontent.com/rarestype/swift-ip/refs/badges/ci/Tests/visionOS/status.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml) |
 | 🍏 Darwin (watchOS) | [![Status](https://raw.githubusercontent.com/rarestype/swift-ip/refs/badges/ci/Tests/watchOS/status.svg)](https://github.com/rarestype/swift-ip/actions/workflows/Tests.yml) |
+| 💝 Linux (aarch64) | [![Status](https://raw.githubusercontent.com/rarestype/swift-ip/refs/badges/ci/SemanticRelease/Linux-aarch64/status.svg)](https://github.com/rarestype/swift-ip/actions/workflows/SemanticRelease.yml) |
 <!-- DO NOT EDIT ABOVE! AUTOSYNC CONTENT [STATUS TABLE] -->
 
 [Check deployment minimums](https://swiftinit.org/docs/swift-ip#ss:platform-requirements)
